@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FarmaScouter_v2</string>
+
+    <!-- General Strings -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+    <!-- Strings MedPSuministro -->
+    <string name="nationalCode">National code:</string>
+    <string name="name">Name:</string>
+    <string name="typeof">Type of supply problem:</string>
+    <string name="startDate">Start date:</string>
+    <string name="endDate">End date:</string>
+    <string name="active">Active:</string>
+    <string name="remarks">Remarks:</string>
+    <!-- String Medicamento-->
+    <string name="nregister">Register number:</string>
+    <string name="titularLab">Titular Lab:</string>
+    <string name="cpresc">Cpresc:</string>
+    <string name="state">State:</string>
+    <string name="commercialised">Commercialised:</string>
+    <string name="prescription">Prescription:</string>
+    <string name="generic">Generic:</string>
+</resources>
