@@ -8,13 +8,18 @@
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/drawable/ic_mono_metacontact_unknown.xml" value="0.2203125" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/drawable/rv_element_shape.xml" value="0.2203125" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/drawable/search_bar_shape.xml" value="0.2203125" />
-        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_drug.xml" value="0.1" />
-        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_main.xml" value="0.10507246376811594" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_drug.xml" value="0.25" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_main.xml" value="0.21" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_view_pager2.xml" value="0.36277173913043476" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/drug_fragment.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/favourites_dialog.xml" value="0.1" />
-        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_drug.xml" value="0.1" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_drug.xml" value="0.15" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_drug_umls.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_drugs.xml" value="0.22" />
-        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_favourites.xml" value="0.1" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_favourites.xml" value="0.2" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_home.xml" value="0.10507246376811594" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_sample.xml" value="0.35778985507246375" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/fragment_view_pager.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/header_navigation_drawer.xml" value="0.18" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_drug_fragment.xml" value="0.22" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_home_fragment.xml" value="0.2" />

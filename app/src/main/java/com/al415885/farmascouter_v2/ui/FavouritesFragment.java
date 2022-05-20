@@ -10,19 +10,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.al415885.farmascouter_v2.DrugActivity;
 import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterHomeFrag;
 import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterMedFrag;
 import com.al415885.farmascouter_v2.adapters.OnItemClickListener;
 import com.al415885.farmascouter_v2.adapters.OnLongItemClickListener;
 import com.al415885.farmascouter_v2.db.OrmLiteHelper;
 import com.al415885.farmascouter_v2.results.ResultsMed;
-import com.al415885.farmascouter_v2.threads.CIMAThread;
+import com.google.android.material.navigation.NavigationView;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.ArrayList;

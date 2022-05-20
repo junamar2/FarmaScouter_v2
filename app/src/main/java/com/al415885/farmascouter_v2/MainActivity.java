@@ -20,30 +20,40 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final MenuItem lastItem = null;
+    // UI elements
     private Toolbar tbNavigationDrawer;
     private DrawerLayout dlNavigationDrawer;
     private NavigationView nvNavigationDrawer;
-    private CIMAThread cimaThread = null;
-    private Fragment saveFragment;
 
+    // Threads
+    private CIMAThread cimaThread = null;
+
+    /** Method that creates the main activity of the APP
+     *
+     * @param savedInstanceState: Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Put the layout
         setContentView(R.layout.activity_main);
-        this.tbNavigationDrawer = findViewById(R.id.tb_navigation_drawer);
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.fcv_navigation_drawer, HomeFragment.class, null)
-                .commit();
-        setSupportActionBar(this.tbNavigationDrawer);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-        this.dlNavigationDrawer = findViewById(R.id.nd_layout);
-        this.nvNavigationDrawer = findViewById(R.id.nv_navigation_drawer);
-        this.nvNavigationDrawer.setNavigationItemSelectedListener(this);
+
+        // Find the UI elements
+        findUIElements();
+
+        // Load the corresponding Fragment into the view
+        loadFragment();
+
+        // Set up the Action Bar
+        setUpActionBar();
     }
 
+    /**
+     * Method that opens the Navigation Drawer if the item of the Action Bar is pressed
+     * @param item: MenuItem
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -53,6 +63,9 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method that closes de Navigation Drawer if back is pressed
+     */
     @Override
     public void onBackPressed() {
         if (this.dlNavigationDrawer.isDrawerOpen(GravityCompat.START)) {
@@ -62,10 +75,16 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Method that manages the layouts to be loaded depending of the selected item
+     * @param item: MenuItem
+     * @return boolean
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        this.cimaThread.interrupt();
+        // If an item is selected, close drawer
         this.dlNavigationDrawer.closeDrawer(GravityCompat.START);
+        // Depending on the item selected, lead the class
         Class<? extends Fragment> fragmentClass = null;
         switch (item.getItemId()){
             case R.id.navigation_home:
@@ -87,6 +106,7 @@ public class MainActivity extends AppCompatActivity
             default:
                 break;
         }
+        // If the item is checked, stay. If not, load
         if (fragmentClass != null && !item.isChecked()) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
@@ -101,12 +121,50 @@ public class MainActivity extends AppCompatActivity
         this.dlNavigationDrawer.openDrawer(GravityCompat.START);
     }
 
+    /**
+     * Method that returns the Navigation Drawer
+     * @return NavigationView
+     */
     public NavigationView getNavigationDrawer() {
         return this.nvNavigationDrawer;
     }
 
+    /**
+     * Method that sets the CIMA Thread into the Main Activity
+     * @param cimaThread: CIMAThread
+     */
     public void setCimaThread(CIMAThread cimaThread){
         this.cimaThread = cimaThread;
+    }
+
+    /**
+     * Method that find the elements of the UI
+     */
+    private void findUIElements(){
+        this.tbNavigationDrawer = findViewById(R.id.tb_navigation_drawer);
+        this.dlNavigationDrawer = findViewById(R.id.nd_layout);
+        this.nvNavigationDrawer = findViewById(R.id.nv_navigation_drawer);
+    }
+
+    /**
+     * Method that loads the main Fragment
+     */
+    private void loadFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.fcv_navigation_drawer, HomeFragment.class, null)
+                .commit();
+    }
+
+    /**
+     * Method that sets up the Action Bar
+     */
+    private void setUpActionBar(){
+        setSupportActionBar(this.tbNavigationDrawer);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        // Attach a listener to the Navigation Drawer
+        this.nvNavigationDrawer.setNavigationItemSelectedListener(this);
     }
 
     /** Method that performs any final cleanup before an activity is destroyed */

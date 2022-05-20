@@ -1,10 +1,12 @@
 package com.al415885.farmascouter_v2;
 
-import com.al415885.farmascouter_v2.results.ResultsMedPSuministro;
 import com.al415885.farmascouter_v2.results.ResultsRCambios;
 
 import java.util.List;
 
+/**
+ * Class that gets the response of type MedicamentoPSuministro
+ */
 public class MedRCambios {
 
     // Class-specific variables
@@ -13,10 +15,10 @@ public class MedRCambios {
 
     /**
      * Class constructor
-     * @param totalFilas
-     * @param pagina
-     * @param tamanioPagina
-     * @param resultados
+     * @param totalFilas: int
+     * @param pagina: int
+     * @param tamanioPagina: int
+     * @param resultados: List<ResultsRCambios>
      */
     public MedRCambios(int totalFilas, int pagina, int tamanioPagina,
                           List<ResultsRCambios> resultados){
@@ -26,6 +28,10 @@ public class MedRCambios {
         this.resultados = resultados;
     }
 
+    /**
+     * Method that returns the List of results obtained
+     * @return List<ResultsRCambios>
+     */
     public List<ResultsRCambios> getResultados(){
         return this.resultados;
     }

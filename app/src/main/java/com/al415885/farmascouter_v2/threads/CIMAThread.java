@@ -44,7 +44,7 @@ public class CIMAThread extends Thread implements Runnable{
 
     // URLs for access to different information
     private static final String URLPSUMINISTRO =
-            "https://cima.aemps.es/cima/rest/psuministro?pagina=1";
+            "https://cima.aemps.es/cima/rest/psuministro";
     private String URLRCAMBIOS =
             "https://cima.aemps.es/cima/rest/registroCambios?fecha=";
     private static final String URLSEARCHMEDNAME =
@@ -164,7 +164,7 @@ public class CIMAThread extends Thread implements Runnable{
     public void setPaginaURL(int pagina){
         switch (this.threadType){
             case PSUMINISTRO:
-                this.url = URLPSUMINISTRO.substring(0, 51) + String.valueOf(pagina);
+                this.url = URLPSUMINISTRO.substring(0, 43) + "?pagina=" + String.valueOf(pagina);
                 httpRequest(this.url, MedPSuministro.class);
                 break;
             case RCAMBIOS:
