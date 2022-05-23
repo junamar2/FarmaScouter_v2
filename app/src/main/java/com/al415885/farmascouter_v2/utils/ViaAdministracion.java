@@ -12,4 +12,8 @@ public class ViaAdministracion implements Serializable {
         this.id = id;
         this.nombre = nombre;
     }
+
+    public String getNombre(){
+        return this.nombre;
+    }
 }

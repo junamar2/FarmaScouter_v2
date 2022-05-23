@@ -18,4 +18,8 @@ public class Documento implements Serializable {
         this.secc = secc;
         this.fecha = fecha;
     }
+
+    public String getUrl(){
+        return this.url;
+    }
 }

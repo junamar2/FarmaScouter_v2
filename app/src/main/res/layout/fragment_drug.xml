@@ -36,5 +36,357 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDrugName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDrugNameValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvLab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/titularLab"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLabValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvNRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nregister"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvNRegisterValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvVTM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vtm"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvVTMValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvPrescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cpresc"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPrescriptionValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvDosage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dosage"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDosageValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider8"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvDosageForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dosage_form"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDosageFormValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider9"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvSimpleDosage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/simple_dosage_form"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSimpleDosageValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvWays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/administration_ways"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvWaysValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbCommercialised"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/commercialised" />
+
+                <CheckBox
+                    android:id="@+id/cbPrescription"
+                    android:layout_width="137dp"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/prescription" />
+
+                <CheckBox
+                    android:id="@+id/cbGeneric"
+                    android:layout_width="108dp"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/generic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbDriving"
+                    android:layout_width="134dp"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/driving" />
+
+                <CheckBox
+                    android:id="@+id/cbTriangle"
+                    android:layout_width="137dp"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/triangle" />
+
+                <CheckBox
+                    android:id="@+id/cbOrphan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/orphan" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbBiosimilar"
+                    android:layout_width="134dp"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/biosimilar" />
+
+                <CheckBox
+                    android:id="@+id/cbPSum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/psum" />
+
+                <CheckBox
+                    android:id="@+id/cbNotes"
+                    android:layout_width="110dp"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/notes" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbEMA"
+                    android:layout_width="134dp"
+                    android:layout_height="48dp"
+                    android:text="@string/ema" />
+
+                <CheckBox
+                    android:id="@+id/cbMaterialsInf"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:clickable="false"
+                    android:text="@string/materialsInf" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDocument"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/simple_dosage_form"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDocumentValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:linksClickable="true"
+                android:autoLink="web"/>
+
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvNonReplaceable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/simple_dosage_form"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvNonReplaceableValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+            <View
+                android:id="@+id/divider13"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/tvState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/simple_dosage_form"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvStateValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

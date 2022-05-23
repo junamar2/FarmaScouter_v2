@@ -93,8 +93,87 @@ public class ResultsMed implements Serializable {
         return this.labtitular;
     }
 
+    public String getCpresc(){
+        return this.cpresc;
+    }
+
+    public String getDosis(){
+        return this.dosis;
+    }
+
+    public Estado getEstado(){
+        return this.estado;
+    }
+
+    public boolean isComerc(){
+        return this.comerc;
+    }
+
+    public boolean isReceta(){
+        return this.receta;
+    }
+
+    public boolean isGenerico(){
+        return this.generico;
+    }
+
+    public boolean isConduc(){
+        return this.conduc;
+    }
+
+    public boolean isTriangulo(){
+        return this.triangulo;
+    }
+
+    public boolean isHuerfano(){
+        return this.huerfano;
+    }
+
+    public boolean isBiosimilar(){
+        return this.biosimilar;
+    }
+
+    public boolean isPsum(){
+        return this.psum;
+    }
+
+    public boolean isNotas(){
+        return this.notas;
+    }
+
+    public boolean isMaterialesInf(){
+        return this.materialesInf;
+    }
+
+    public boolean isEma(){
+        return this.ema;
+    }
+
+    public List<Documento> getDocs(){
+        return this.docs;
+    }
+
+    public List<NoSustituible> getNoSustituible(){
+        return this.noSustituible;
+    }
     public List<Foto> getFotos(){
         return this.fotos;
+    }
+
+    public List<ViaAdministracion> getViasAdministracion(){
+        return this.viasAdministracion;
+    }
+
+    public FormaFarmaceutica getFormaFarmaceutica(){
+        return this.formaFarmaceutica;
+    }
+
+    public FormaFarmaceuticaSimplificada getFormaFarmaceuticaSimplificada(){
+        return this.formaFarmaceuticaSimplificada;
+    }
+
+    public Vtm getVTM(){
+        return this.vtm;
     }
 }
 

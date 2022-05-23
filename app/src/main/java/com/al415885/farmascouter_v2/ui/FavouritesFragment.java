@@ -104,7 +104,11 @@ public class FavouritesFragment extends Fragment {
                         OrmLiteHelper.getInstance(getContext())
                                 .getRuntimeDao(ResultsMed.class);
                 Iterator<ResultsMed> iterator = dao.iterator();
-                while (iterator.hasNext()) rvList.add(iterator.next());
+                while (iterator.hasNext()){
+                    ResultsMed drug = iterator.next();
+                    rvList.add(drug);
+                }
+                dao.closeLastIterator();
                 if(isVisible()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override

@@ -17,9 +17,24 @@
     <!-- String Medicamento-->
     <string name="nregister">Register number:</string>
     <string name="titularLab">Titular Lab:</string>
-    <string name="cpresc">Cpresc:</string>
+    <string name="cpresc">Prescription conditions:</string>
     <string name="state">State:</string>
-    <string name="commercialised">Commercialised:</string>
-    <string name="prescription">Prescription:</string>
-    <string name="generic">Generic:</string>
+    <string name="commercialised">Commercialised</string>
+    <string name="prescription">Prescription</string>
+    <string name="generic">Generic</string>
+    <string name="dosage">Dosage:</string>
+    <string name="driving">Affects driving</string>
+    <string name="triangle">Black triangle</string>
+    <string name="orphan">Orphan drug</string>
+    <string name="biosimilar">Biosimilar</string>
+    <string name="non_replaceable">Non-replaceable:</string>
+    <string name="psum">Supply problems</string>
+    <string name="notes">Notes</string>
+    <string name="materialsInf">Computer security materials</string>
+    <string name="ema">EMA registered</string>
+    <string name="docs">Documents:</string>
+    <string name="administration_ways">Ways of administration:</string>
+    <string name="dosage_form">Dosage form:</string>
+    <string name="simple_dosage_form">Simple dosage form:</string>
+    <string name="vtm">Alias:</string>
 </resources>
