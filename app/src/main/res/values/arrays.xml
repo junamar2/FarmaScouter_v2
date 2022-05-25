@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="optionsRole">
+        <item>@string/SelectARole</item>
+        <item>@string/doctor</item>
+        <item>@string/pharmacist</item>
+        <item>@string/patient</item>
+        <item>@string/other</item>
+    </string-array>
+    <string-array name="optionsRoleSettings">
+        <item>@string/doctor</item>
+        <item>@string/pharmacist</item>
+        <item>@string/patient</item>
+        <item>@string/other</item>
+    </string-array>
+</resources>

@@ -6,6 +6,22 @@
     <string name="no">No</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <!-- Dialog profile -->
+    <string name="nameHint">Insert your name</string>
+    <string name="SelectARole">Select a role</string>
+    <string name="doctor">Doctor</string>
+    <string name="pharmacist">Pharmacist</string>
+    <string name="patient">Patient</string>
+    <string name="other">Other</string>
+    <string name="dialogTitle">Complete your profile before starting</string>
+    <!-- String Fragment Settings -->
+    <string name="yourProfile">Your profile</string>
+    <string name="yourProfileNameSummary">Insert your name</string>
+    <string name="yourProfileNameTitle">Name</string>
+    <string name="yourProfileRoleTitle">Role</string>
+    <string name="yourProfileRoleSummary">Select your role</string>
     <!-- Strings MedPSuministro -->
     <string name="nationalCode">National code:</string>
     <string name="name">Name:</string>

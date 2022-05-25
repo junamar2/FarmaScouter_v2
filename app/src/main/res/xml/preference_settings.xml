@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/yourProfile">
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="keyName"
+            android:summary="@string/yourProfileNameSummary"
+            android:title="@string/yourProfileNameTitle">
+        </EditTextPreference>
+
+        <ListPreference
+            android:entries="@array/optionsRoleSettings"
+            android:entryValues="@array/optionsRoleSettings"
+            android:key="keyRole"
+            android:title="@string/yourProfileRoleTitle"
+            android:summary="@string/yourProfileRoleSummary">
+        </ListPreference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -6,9 +6,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.al415885.farmascouter_v2.threads.CIMAThread;
 import com.al415885.farmascouter_v2.ui.DrugsFragment;
@@ -18,15 +25,20 @@ import com.al415885.farmascouter_v2.ui.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        AdapterView.OnItemSelectedListener {
 
     // UI elements
     private Toolbar tbNavigationDrawer;
     private DrawerLayout dlNavigationDrawer;
     private NavigationView nvNavigationDrawer;
 
+
     // Threads
-    private CIMAThread cimaThread = null;
+    private CIMAThread cimaThread;
+
+    // Class-specific variables
+    private SharedPreferences prefs;
 
     /** Method that creates the main activity of the APP
      *
@@ -38,6 +50,13 @@ public class MainActivity extends AppCompatActivity
 
         // Put the layout
         setContentView(R.layout.activity_main);
+
+        // Initialise variables
+        initialiseVariables();
+
+        // Show initial dialog (if needed)
+        if(this.prefs.getString("keyName", "").equals(""))
+            showInitialDialog();
 
         // Find the UI elements
         findUIElements();
@@ -130,11 +149,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Method that returns the preferences of the APP
+     */
+    public SharedPreferences getPrefs(){
+        return this.prefs;
+    }
+
+    /**
      * Method that sets the CIMA Thread into the Main Activity
      * @param cimaThread: CIMAThread
      */
     public void setCimaThread(CIMAThread cimaThread){
         this.cimaThread = cimaThread;
+    }
+
+    /**
+     * Method that shows a initial dialog in order to create a profile
+     */
+    private void showInitialDialog(){
+        ViewDialog dialog = new ViewDialog();
+        dialog.showDialog(this);
     }
 
     /**
@@ -144,6 +178,14 @@ public class MainActivity extends AppCompatActivity
         this.tbNavigationDrawer = findViewById(R.id.tb_navigation_drawer);
         this.dlNavigationDrawer = findViewById(R.id.nd_layout);
         this.nvNavigationDrawer = findViewById(R.id.nv_navigation_drawer);
+    }
+
+    /**
+     * Method that initialise the class-specific variables
+     */
+    private void initialiseVariables(){
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        this.cimaThread = null;
     }
 
     /**
@@ -173,4 +215,13 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
