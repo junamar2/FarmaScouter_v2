@@ -2,7 +2,6 @@ package com.al415885.farmascouter_v2.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,29 +14,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
 import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterHomeFrag;
+import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterHomeFragRCambios;
 import com.al415885.farmascouter_v2.results.ResultsMedPSuministro;
+import com.al415885.farmascouter_v2.results.ResultsRCambios;
 import com.al415885.farmascouter_v2.threads.CIMAThread;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragmentRCambios extends Fragment {
 
     // UI elements
-    private RecyclerView rvHomeFragment;
-    private List<ResultsMedPSuministro> rvList;
-    private CustomRecyclerAdapterHomeFrag adapter;
+    private RecyclerView rvHomeFragmentRC;
+    private List<ResultsRCambios> rvList;
+    private CustomRecyclerAdapterHomeFragRCambios adapter;
 
     // Threads
     private CIMAThread cimaThread;
     private Thread UIThread;
 
     /* Constructor for creating again the view */
-    public HomeFragment(){}
+    public HomeFragmentRCambios(){}
 
     /** Method called to have the fragment instantiate its user interface view
      * @param inflater LayoutInflater: Object used to inflate any views in the fragment
@@ -49,23 +46,23 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         /* Creates the view */
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_rcambios, container, false);
 
         // Find UI elements
-        this.rvHomeFragment = view.findViewById(R.id.rvHomeFragment);
+        this.rvHomeFragmentRC = view.findViewById(R.id.rvHomeFragmentRC);
 
         // Initialise variables
         this.rvList = new ArrayList<>();
-        this.adapter = new CustomRecyclerAdapterHomeFrag(this.rvList);
+        this.adapter = new CustomRecyclerAdapterHomeFragRCambios(this.rvList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(),
                 RecyclerView.VERTICAL, false);
-        this.rvHomeFragment.setAdapter(this.adapter);
-        this.rvHomeFragment.setLayoutManager(manager);
-        setNavigationDrawerCheckedItem();
+        this.rvHomeFragmentRC.setAdapter(this.adapter);
+        this.rvHomeFragmentRC.setLayoutManager(manager);
+
         this.UIThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                rvList.addAll(cimaThread.getRvListPSum());
+                rvList.addAll(cimaThread.getRvListRCambios());
                 if(isVisible()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -77,8 +74,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        this.cimaThread = new CIMAThread(0, getContext(), this.UIThread);
-        ((MainActivity) requireActivity()).setCimaThread(this.cimaThread);
+        this.cimaThread = new CIMAThread(1, getContext(), this.UIThread);
+        ((MainActivity) requireActivity()).setCimaThreadRC(this.cimaThread);
         this.cimaThread.start();
 
         // Return the view
@@ -91,15 +88,5 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    private void setNavigationDrawerCheckedItem() {
-        for (int i = 0; i < 3; i++) {
-            MenuItem item = ((MainActivity) requireActivity()).getNavigationDrawer().getMenu().getItem(i);
-            if(item.getItemId() == R.id.navigation_home){
-                item.setChecked(true);
-            }
-            else item.setChecked(false);
-        }
     }
 }

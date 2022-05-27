@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.results.ResultsMedPSuministro;
+import com.al415885.farmascouter_v2.results.ResultsRCambios;
 
 import java.util.List;
 
@@ -19,13 +19,14 @@ import java.util.List;
  * @author (junamar2@inf.upv.es)
  * @version (2020 - 2021)
  */
-public class CustomRecyclerAdapterHomeFrag extends RecyclerView.Adapter<CustomRecyclerAdapterHomeFrag.ViewHolder> {
+public class CustomRecyclerAdapterHomeFragRCambios
+        extends RecyclerView.Adapter<CustomRecyclerAdapterHomeFragRCambios.ViewHolder> {
 
     /* The list of elements */
-    private List<ResultsMedPSuministro> list;
+    private List<ResultsRCambios> list;
 
     /** Constructor for the class */
-    public CustomRecyclerAdapterHomeFrag(List<ResultsMedPSuministro> list){
+    public CustomRecyclerAdapterHomeFragRCambios(List<ResultsRCambios> list){
         this.list = list;
     }
 
@@ -39,7 +40,8 @@ public class CustomRecyclerAdapterHomeFrag extends RecyclerView.Adapter<CustomRe
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_element_home_fragment_psum, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.rv_element_home_fragment_rcambios, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -51,13 +53,20 @@ public class CustomRecyclerAdapterHomeFrag extends RecyclerView.Adapter<CustomRe
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.tvCn.setText(list.get(position).getCn());
-        holder.tvName.setText(list.get(position).getNombre());
-        holder.tvStartDate.setText(String.valueOf(list.get(position).getFini()));
-        holder.tvEndDate.setText(String.valueOf(list.get(position).getFfin()));
-        holder.tvTypeOf.setText(String.valueOf(list.get(position).getTipoProblemaSuministro()));
-        holder.tvActive.setText(String.valueOf(list.get(position).isActivo()));
-        holder.tvRemarks.setText(list.get(position).getObserv());
+        holder.tvNRegisterRC.setText(list.get(position).getNregistro());
+        holder.tvDate.setText(String.valueOf(list.get(position).getFecha()));
+        holder.tvChangeType.setText(String.valueOf(list.get(position).getTipoCambio()));
+        List<String> changes = list.get(position).getCambio();
+        String chText = "";
+        for(int i = 0; i < changes.size(); i++){
+            if(changes.size() - 1 == i)
+                chText = chText + changes.get(i);
+            else
+                chText = chText + changes.get(i) + ", ";
+        }
+        if(chText.equals(""))
+            chText = "Unknown";
+        holder.tvChange.setText(chText);
     }
 
     /** Returns the total number of items in the data set held by the adapter
@@ -77,18 +86,15 @@ public class CustomRecyclerAdapterHomeFrag extends RecyclerView.Adapter<CustomRe
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         /* The elements of the holder */
-        public TextView tvCn, tvName, tvStartDate, tvEndDate, tvTypeOf, tvActive, tvRemarks;
+        public TextView tvNRegisterRC, tvDate, tvChangeType, tvChange;
 
         /** Constructor for the class */
         public ViewHolder(View view){
             super(view);
-            this.tvCn = (TextView) view.findViewById(R.id.tvCnValue);
-            this.tvName = (TextView) view.findViewById(R.id.tvNameValue);
-            this.tvStartDate = (TextView) view.findViewById(R.id.tvStartDateValue);
-            this.tvEndDate = (TextView) view.findViewById(R.id.tvEndDateValue);
-            this.tvTypeOf = (TextView) view.findViewById(R.id.tvTypeOfValue);
-            this.tvActive = (TextView) view.findViewById(R.id.tvActiveValue);
-            this.tvRemarks = (TextView) view.findViewById(R.id.tvRemarksValue);
+            this.tvNRegisterRC = (TextView) view.findViewById(R.id.tvNRegisterRCValue);
+            this.tvDate = (TextView) view.findViewById(R.id.tvDateValue);
+            this.tvChangeType = (TextView) view.findViewById(R.id.tvChangeTypeValue);
+            this.tvChange = (TextView) view.findViewById(R.id.tvChangeValue);
         }
     }
 }

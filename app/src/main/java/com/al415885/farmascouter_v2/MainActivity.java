@@ -6,24 +6,28 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.al415885.farmascouter_v2.threads.CIMAThread;
 import com.al415885.farmascouter_v2.ui.DrugsFragment;
 import com.al415885.farmascouter_v2.ui.FavouritesFragment;
-import com.al415885.farmascouter_v2.ui.HomeFragment;
+import com.al415885.farmascouter_v2.ui.HomeFragmentPSum;
 import com.al415885.farmascouter_v2.ui.SettingsFragment;
+import com.al415885.farmascouter_v2.ui.ViewPagerFragment;
+import com.al415885.farmascouter_v2.ui.ViewPagerFragmentHome;
 import com.google.android.material.navigation.NavigationView;
 
+/**
+ * Class for the Main activity
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         AdapterView.OnItemSelectedListener {
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity
 
 
     // Threads
-    private CIMAThread cimaThread;
+    private CIMAThread cimaThreadPSUM, cimaThreadRC, cimaThreadDR;
 
     // Class-specific variables
     private SharedPreferences prefs;
@@ -76,6 +80,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            // Hide the keyboard
+            hideSoftKeyboard();
+            // Open the Drawer
             this.dlNavigationDrawer.openDrawer(GravityCompat.START);
             return true;
         }
@@ -101,13 +108,17 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Hide the keyboard
+        hideSoftKeyboard();
+        // Stops any active Thread
+        stopThreads();
         // If an item is selected, close drawer
         this.dlNavigationDrawer.closeDrawer(GravityCompat.START);
         // Depending on the item selected, lead the class
         Class<? extends Fragment> fragmentClass = null;
         switch (item.getItemId()){
             case R.id.navigation_home:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = ViewPagerFragmentHome.class;
                 getSupportActionBar().setTitle("Home");
                 break;
             case R.id.navigation_drugs:
@@ -156,11 +167,50 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Method that sets the CIMA Thread into the Main Activity
+     * Method that sets the CIMA Thread PSUM into the Main Activity
      * @param cimaThread: CIMAThread
      */
-    public void setCimaThread(CIMAThread cimaThread){
-        this.cimaThread = cimaThread;
+    public void setCimaThreadPSUM(CIMAThread cimaThread){
+        this.cimaThreadPSUM = cimaThread;
+    }
+
+    /**
+     * Method that sets the CIMA Thread RC into the Main Activity
+     * @param cimaThread: CIMAThread
+     */
+    public void setCimaThreadRC(CIMAThread cimaThread){
+        this.cimaThreadRC = cimaThread;
+    }
+
+    /**
+     * Method that sets the CIMA Thread DR into the Main Activity
+     * @param cimaThread: CIMAThread
+     */
+    public void setCimaThreadDR(CIMAThread cimaThread){
+        this.cimaThreadDR = cimaThread;
+    }
+
+    /**
+     * Method that hides the Keyboard
+     */
+    public void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if(inputMethodManager.isAcceptingText()){
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * Method that interrupts any active Thread
+     */
+    private void stopThreads(){
+        if(this.cimaThreadRC!= null && this.cimaThreadRC.isAlive())
+            this.cimaThreadRC.interrupt();
+        else if(this.cimaThreadPSUM!= null && this.cimaThreadPSUM.isAlive())
+            this.cimaThreadPSUM.interrupt();
+        else if(this.cimaThreadDR!= null && this.cimaThreadDR.isAlive())
+            this.cimaThreadDR.interrupt();
     }
 
     /**
@@ -185,7 +235,9 @@ public class MainActivity extends AppCompatActivity
      */
     private void initialiseVariables(){
         this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        this.cimaThread = null;
+        this.cimaThreadDR = null;
+        this.cimaThreadRC = null;
+        this.cimaThreadPSUM = null;
     }
 
     /**
@@ -194,7 +246,7 @@ public class MainActivity extends AppCompatActivity
     private void loadFragment(){
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.fcv_navigation_drawer, HomeFragment.class, null)
+                .replace(R.id.fcv_navigation_drawer, ViewPagerFragmentHome.class, null)
                 .commit();
     }
 

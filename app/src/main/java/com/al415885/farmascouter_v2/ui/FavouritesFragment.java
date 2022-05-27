@@ -1,5 +1,6 @@
 package com.al415885.farmascouter_v2.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -91,6 +93,41 @@ public class FavouritesFragment extends Fragment {
         }, new OnLongItemClickListener() {
             @Override
             public void onLongClick(int position) {
+                androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+                adb.setView(R.layout.favourites_dialog);
+                adb.setTitle(((MainActivity) requireActivity()).getResources()
+                        .getString(R.string.titleDialogFavourites));
+                adb.setMessage(((MainActivity) requireActivity()).getResources()
+                        .getString(R.string.dialogFavouritesDescription));
+                adb.setIcon(android.R.drawable.ic_dialog_alert);
+                adb.setPositiveButton(((MainActivity) requireActivity()).getResources()
+                        .getString(R.string.accept), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                RuntimeExceptionDao<ResultsMed, Integer> dao =
+                                        OrmLiteHelper.getInstance(getContext())
+                                                .getRuntimeDao(ResultsMed.class);
+                                dao.delete(rvList.get(position));
+                                rvList.remove(position);
+                                ((MainActivity) requireActivity()).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                });
+                            }
+                        }).start();
+                    }
+                });
+                adb.setNegativeButton(((MainActivity) requireActivity()).getResources()
+                        .getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                adb.show();
             }
         }, this.rvList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(),

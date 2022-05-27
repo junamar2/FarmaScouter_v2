@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,8 @@ public class DrugsFragment extends Fragment {
     private ImageButton imbSearch;
     private EditText etSearch;
     private View view;
+    private ProgressBar pbDrugs;
+    private TextView tvPBDrugs, tvNoResults;
 
     // Threads
     private CIMAThread cimaThread;
@@ -62,11 +66,14 @@ public class DrugsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         /* Creates the view */
-        view = inflater.inflate(R.layout.fragment_drugs, container, false);
+        this.view = inflater.inflate(R.layout.fragment_drugs, container, false);
         // Find UI elements
-        this.rvDrugsFragment = view.findViewById(R.id.rvDrugFragment);
-        this.imbSearch = view.findViewById(R.id.imbSearch);
-        this.etSearch = view.findViewById(R.id.etSearch);
+        this.rvDrugsFragment = this.view.findViewById(R.id.rvDrugFragment);
+        this.imbSearch = this.view.findViewById(R.id.imbSearch);
+        this.etSearch = this.view.findViewById(R.id.etSearch);
+        this.pbDrugs = this.view.findViewById(R.id.pbDrugs);
+        this.tvPBDrugs = this.view.findViewById(R.id.tvPBDrugs);
+        this.tvNoResults = this.view.findViewById(R.id.tvNoResults);
 
         // Initialise variables
         setUpRecyclerView();
@@ -77,25 +84,46 @@ public class DrugsFragment extends Fragment {
         this.imbSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Hide the keyboard
+                if(view != null){
+                    ((MainActivity) requireActivity()).hideSoftKeyboard();
+                }
                 setUpRecyclerView();
                 UIThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         rvList.addAll(cimaThread.getRvListMed());
                         if(isVisible()) {
-                            requireActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            });
+                            if(rvList.isEmpty()){
+                                requireActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        tvNoResults.setVisibility(View.VISIBLE);
+                                        pbDrugs.setVisibility(View.INVISIBLE);
+                                        tvPBDrugs.setVisibility(View.INVISIBLE);
+                                    }
+                                });
+                            }
+                            else {
+                                requireActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        adapter.notifyDataSetChanged();
+                                        pbDrugs.setVisibility(View.INVISIBLE);
+                                        tvPBDrugs.setVisibility(View.INVISIBLE);
+                                    }
+                                });
+                            }
                         }
                     }
                 });
                 cimaThread = new CIMAThread(2, getContext(), UIThread);
                 cimaThread.setSearchMedName(etSearch.getText().toString().trim().toLowerCase());
-                ((MainActivity) requireActivity()).setCimaThread(cimaThread);
+                ((MainActivity) requireActivity()).setCimaThreadDR(cimaThread);
                 cimaThread.start();
+                pbDrugs.setVisibility(View.VISIBLE);
+                tvPBDrugs.setVisibility(View.VISIBLE);
+                pbDrugs.animate();
             }
         });
 
@@ -139,9 +167,13 @@ public class DrugsFragment extends Fragment {
     private void showAddFavouritesDialog(ResultsMed drug){
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         adb.setView(R.layout.favourites_dialog);
-        adb.setTitle("Add drug to favourites?");
+        adb.setTitle(((MainActivity) requireActivity()).getResources()
+                .getString(R.string.titleDialogDrugs));
+        adb.setMessage(((MainActivity) requireActivity()).getResources()
+                .getString(R.string.dialogDrugsDescription));
         adb.setIcon(android.R.drawable.ic_dialog_alert);
-        adb.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(((MainActivity) requireActivity()).getResources()
+                .getString(R.string.accept), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 new Thread(new Runnable() {
                     @Override
@@ -154,7 +186,8 @@ public class DrugsFragment extends Fragment {
                 }).start();
             }
         });
-        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton(((MainActivity) requireActivity()).getResources()
+                .getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }

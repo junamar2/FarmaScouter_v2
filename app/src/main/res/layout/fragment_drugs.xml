@@ -33,7 +33,48 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvNoResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/NoResults"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/pbDrugs"
+        app:layout_constraintEnd_toEndOf="@+id/pbDrugs"
+        app:layout_constraintStart_toStartOf="@+id/pbDrugs"
+        app:layout_constraintTop_toTopOf="@+id/pbDrugs" />
+
+    <ProgressBar
+        android:id="@+id/pbDrugs"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:progressTint="@color/secondary_color"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+
+    <TextView
+        android:id="@+id/tvPBDrugs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/searchingDrugs"
+        android:textAlignment="center"
+        android:textColor="@color/secondary_color"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/pbDrugs"
+        app:layout_constraintStart_toStartOf="@+id/pbDrugs"
+        app:layout_constraintTop_toBottomOf="@+id/pbDrugs">
+
+    </TextView>
+
     <include
+        android:id="@+id/include"
         layout="@layout/search_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

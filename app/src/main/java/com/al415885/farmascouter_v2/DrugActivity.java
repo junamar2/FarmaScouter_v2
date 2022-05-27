@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.al415885.farmascouter_v2.ui.HomeFragment;
 import com.al415885.farmascouter_v2.ui.ViewPagerFragment;
 
 public class DrugActivity extends AppCompatActivity {

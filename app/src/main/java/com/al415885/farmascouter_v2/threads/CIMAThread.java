@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -60,8 +61,8 @@ public class CIMAThread extends Thread implements Runnable{
         this.UIThread = UIThread;
         this.requestQueue = Volley.newRequestQueue(this.context);
         this.rvListPSum = new ArrayList<>();
-        this.rvListPSum = new ArrayList<>();
         this.rvListMed = new ArrayList<>();
+        this.rvListRCambios = new ArrayList<>();
     }
 
     private void httpRequest(String url, Class<?> cl){
@@ -69,6 +70,13 @@ public class CIMAThread extends Thread implements Runnable{
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        // Correct errors at the response
+                        if(response.charAt(0) != '{'){
+                            response = "{" + response;
+                        }
+                        if (response.substring(response.length()-2, response.length()).equals("}}")){
+                            response = response.substring(0, response.length()-2) + "}";
+                        }
                         Gson gson = new Gson();
                         gsonResp = gson.fromJson(response, cl);
                         switch (threadType){
@@ -78,7 +86,10 @@ public class CIMAThread extends Thread implements Runnable{
                                 if(!resPSum.isEmpty()) {
                                     for (int i = 0; i < resPSum.size(); i++)
                                         rvListPSum.add(resPSum.get(i));
-                                    setPaginaURL(medPSum.pagina + 1);
+                                    if(medPSum.pagina < 30)
+                                        setPaginaURL(medPSum.pagina + 1);
+                                    else
+                                        UIThread.start();
                                 }
                                 else{
                                     UIThread.start();
@@ -90,7 +101,10 @@ public class CIMAThread extends Thread implements Runnable{
                                 if(!resRcambios.isEmpty()) {
                                     for (int i = 0; i < resRcambios.size(); i++)
                                         rvListRCambios.add(resRcambios.get(i));
-                                    setPaginaURL(medRCambios.pagina + 1);
+                                    if(medRCambios.pagina < 30)
+                                        setPaginaURL(medRCambios.pagina + 1);
+                                    else
+                                        UIThread.start();
                                 }
                                 else{
                                     UIThread.start();
@@ -102,7 +116,10 @@ public class CIMAThread extends Thread implements Runnable{
                                 if(!resMed.isEmpty()) {
                                     for (int i = 0; i < resMed.size(); i++)
                                         rvListMed.add(resMed.get(i));
-                                    setPaginaURL(medicamento.pagina + 1);
+                                    if(medicamento.pagina < 30)
+                                        setPaginaURL(medicamento.pagina + 1);
+                                    else
+                                        UIThread.start();
                                 }
                                 else{
                                     UIThread.start();
@@ -128,9 +145,13 @@ public class CIMAThread extends Thread implements Runnable{
                 httpRequest(this.url, MedPSuministro.class);
                 break;
             case RCAMBIOS:
-                Date date = new Date(System.currentTimeMillis());
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                this.url = URLRCAMBIOS + dateFormat.format(date) + "&pagina=1";
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -1);
+                String date = dateFormat.format(cal.getTime());
+                this.URLRCAMBIOS = this.URLRCAMBIOS + date;
+                this.url = URLRCAMBIOS + "&pagina=1";
+                httpRequest(this.url, MedRCambios.class);
                 break;
             case DRUGSEARCH:
                 this.url = URLSEARCHMEDNAME + this.searchMedName +
@@ -145,6 +166,7 @@ public class CIMAThread extends Thread implements Runnable{
     public void setSearchMedName(String searchMedName){
         this.searchMedName = searchMedName;
     }
+
     public Object getResponse(){
         return this.gsonResp;
     }
@@ -168,8 +190,8 @@ public class CIMAThread extends Thread implements Runnable{
                 httpRequest(this.url, MedPSuministro.class);
                 break;
             case RCAMBIOS:
-                this.url = URLPSUMINISTRO.substring(0, 74) + String.valueOf(pagina);
-                httpRequest(this.url, MedPSuministro.class);
+                this.url = this.url.substring(0, 72) + String.valueOf(pagina);
+                httpRequest(this.url, MedRCambios.class);
                 break;
             case DRUGSEARCH:
                 this.url = URLSEARCHMEDNAME.substring(0, 52) + this.searchMedName +

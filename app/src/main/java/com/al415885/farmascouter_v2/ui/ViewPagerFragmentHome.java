@@ -17,10 +17,10 @@ import com.al415885.farmascouter_v2.R;
 import com.al415885.farmascouter_v2.adapters.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
-public class ViewPagerFragment extends Fragment {
+public class ViewPagerFragmentHome extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_view_pager, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_view_pager_home, container, false);
         return fragmentView;
     }
 
@@ -28,24 +28,16 @@ public class ViewPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // find views by id
-        ViewPager viewPager = view.findViewById(R.id.vpDrug);
-        TabLayout tabLayout = view.findViewById(R.id.tlDrug);
+        ViewPager viewPager = view.findViewById(R.id.vpHome);
+        TabLayout tabLayout = view.findViewById(R.id.tlHome);
 
         // attach tablayout with viewpager
         tabLayout.setupWithViewPager(viewPager);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        // add your fragments
-        Activity activity = requireActivity();
-        if(activity.getClass().equals(MainActivity.class)){
-            adapter.addFrag(new HomeFragmentPSum(), "Supply Problems");
-            adapter.addFrag(new HomeFragmentRCambios(), "Changelog");
-        }
-        else if(activity.getClass().equals(DrugActivity.class)) {
-            adapter.addFrag(new DrugFragment(), "General Information");
-            adapter.addFrag(new DrugUMLSFragment(), "More Info");
-        }
+        adapter.addFrag(new HomeFragmentPSum(), "Supply Problems");
+        adapter.addFrag(new HomeFragmentRCambios(), "Changelog");
 
         // set adapter on viewpager
         viewPager.setAdapter(adapter);

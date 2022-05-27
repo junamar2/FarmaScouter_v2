@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">FarmaScouter_v2</string>
 
+    <!-- HomeFragment Strings -->
+    <string name="lastUpdates">Latest updates on medicines</string>
+    <!-- DrugsFragment Strings -->
+    <string name="searchingDrugs">Searching for drugs. This may take a wile</string>
+    <string name="NoResults">No results found, try again</string>
     <!-- General Strings -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -16,6 +21,11 @@
     <string name="patient">Patient</string>
     <string name="other">Other</string>
     <string name="dialogTitle">Complete your profile before starting</string>
+    <!-- Dialogs RecyclerViews -->
+    <string name="titleDialogDrugs">Add drug to favourites?</string>
+    <string name="titleDialogFavourites">Delete drug from favourites?</string>
+    <string name="dialogDrugsDescription">Click accept to add the selected drug to favourites</string>
+    <string name="dialogFavouritesDescription">Click accept to delete the selected drug from favourites</string>
     <!-- String Fragment Settings -->
     <string name="yourProfile">Your profile</string>
     <string name="yourProfileNameSummary">Insert your name</string>
@@ -30,6 +40,9 @@
     <string name="endDate">End date:</string>
     <string name="active">Active:</string>
     <string name="remarks">Remarks:</string>
+    <!-- Strings MedRCambios -->
+    <string name="changeType">Change type:</string>
+    <string name="change">Change:</string>
     <!-- String Medicamento-->
     <string name="nregister">Register number:</string>
     <string name="titularLab">Titular Lab:</string>
