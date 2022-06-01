@@ -10,9 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.al415885.farmascouter_v2.DrugActivity;
 import com.al415885.farmascouter_v2.R;
 import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterMedFrag;
 import com.al415885.farmascouter_v2.results.ResultsMed;
+import com.al415885.farmascouter_v2.threads.UMLSThread;
 
 import java.util.List;
 
@@ -40,6 +42,15 @@ public class DrugUMLSFragment extends Fragment {
         // Find UI elements
         // Initialise variables
         // Return the view
+        Thread UIThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        String search = (String) ((DrugActivity) requireActivity()).getIntent().getSerializableExtra("Search");
+        UMLSThread umlsThread = new UMLSThread(0, getContext(), UIThread, search);
+        umlsThread.start();
         return view;
     }
 

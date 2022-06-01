@@ -53,6 +53,9 @@ public class DrugsFragment extends Fragment {
     private CIMAThread cimaThread;
     private Thread UIThread;
 
+    // Class-specific variables
+    private String search;
+
     /* Constructor for creating again the view */
     public DrugsFragment(){}
 
@@ -88,6 +91,7 @@ public class DrugsFragment extends Fragment {
                 if(view != null){
                     ((MainActivity) requireActivity()).hideSoftKeyboard();
                 }
+                search = etSearch.getText().toString();
                 setUpRecyclerView();
                 UIThread = new Thread(new Runnable() {
                     @Override
@@ -148,6 +152,7 @@ public class DrugsFragment extends Fragment {
                 ResultsMed med = (ResultsMed) rvList.get(position);
                 Intent intent = new Intent(getContext(), DrugActivity.class);
                 intent.putExtra("Drug", med);
+                intent.putExtra("Search", search);
                 startActivity(intent);
             }
         }, new OnLongItemClickListener() {
