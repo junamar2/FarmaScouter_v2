@@ -3,13 +3,16 @@ package com.al415885.farmascouter_v2.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.results.ResultsRCambios;
+import com.al415885.farmascouter_v2.mappings.SNOMEDCTAtomRelations;
+import com.al415885.farmascouter_v2.results.ResultsMed;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -19,14 +22,15 @@ import java.util.List;
  * @author (junamar2@inf.upv.es)
  * @version (2020 - 2021)
  */
-public class CustomRecyclerAdapterHomeFragRCambios
-        extends RecyclerView.Adapter<CustomRecyclerAdapterHomeFragRCambios.ViewHolder> {
+public class CustomRecyclerAdapterDrugUMLSFrag extends RecyclerView.Adapter<CustomRecyclerAdapterDrugUMLSFrag.ViewHolder> {
 
     /* The list of elements */
-    private List<ResultsRCambios> list;
+    private List<SNOMEDCTAtomRelations> list;
+    private OnItemClickListener onItemClickListener;
+    private OnLongItemClickListener onLongItemClickListener;
 
     /** Constructor for the class */
-    public CustomRecyclerAdapterHomeFragRCambios(List<ResultsRCambios> list){
+    public CustomRecyclerAdapterDrugUMLSFrag(List<SNOMEDCTAtomRelations> list){
         this.list = list;
     }
 
@@ -40,8 +44,7 @@ public class CustomRecyclerAdapterHomeFragRCambios
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rv_element_home_fragment_rcambios, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_element_drug_umls_fragment, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -53,20 +56,8 @@ public class CustomRecyclerAdapterHomeFragRCambios
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.tvNRegisterRC.setText(list.get(position).getNregistro());
-        holder.tvDate.setText(String.valueOf(list.get(position).getFecha()));
-        holder.tvChangeType.setText(String.valueOf(list.get(position).getTipoCambio()));
-        List<String> changes = list.get(position).getCambio();
-        String chText = "";
-        for(int i = 0; i < changes.size(); i++){
-            if(changes.size() - 1 == i)
-                chText = chText + changes.get(i);
-            else
-                chText = chText + changes.get(i) + ", ";
-        }
-        if(chText.equals(""))
-            chText = "Unknown";
-        holder.tvChange.setText(chText);
+        holder.tvName.setText(list.get(position).getRelatedIdName());
+        holder.tvRelationType.setText(list.get(position).getAdditionalRelationLabel());
     }
 
     /** Returns the total number of items in the data set held by the adapter
@@ -86,15 +77,13 @@ public class CustomRecyclerAdapterHomeFragRCambios
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         /* The elements of the holder */
-        public TextView tvNRegisterRC, tvDate, tvChangeType, tvChange;
+        public TextView tvName, tvRelationType;
 
         /** Constructor for the class */
         public ViewHolder(View view){
             super(view);
-            this.tvNRegisterRC = (TextView) view.findViewById(R.id.tvRelationTypeValue);
-            this.tvDate = (TextView) view.findViewById(R.id.tvRelationNameValue);
-            this.tvChangeType = (TextView) view.findViewById(R.id.tvChangeTypeValue);
-            this.tvChange = (TextView) view.findViewById(R.id.tvChangeValue);
+            this.tvName = (TextView) view.findViewById(R.id.tvRelationNameValue);
+            this.tvRelationType = (TextView) view.findViewById(R.id.tvRelationTypeValue);
         }
     }
 }

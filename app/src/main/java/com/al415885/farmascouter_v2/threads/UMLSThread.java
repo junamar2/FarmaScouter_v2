@@ -10,6 +10,8 @@ import com.al415885.farmascouter_v2.mappings.MTHResultDefinitions;
 import com.al415885.farmascouter_v2.mappings.MTHResultDefinitionsBase;
 import com.al415885.farmascouter_v2.mappings.SNOMEDCTAtom;
 import com.al415885.farmascouter_v2.mappings.SNOMEDCTAtomBase;
+import com.al415885.farmascouter_v2.mappings.SNOMEDCTAtomRelations;
+import com.al415885.farmascouter_v2.mappings.SNOMEDCTAtomRelationsBase;
 import com.al415885.farmascouter_v2.results.SearchResultsUMLS;
 import com.al415885.farmascouter_v2.mappings.MTHResult;
 import com.al415885.farmascouter_v2.mappings.MTHResultBase;
@@ -22,8 +24,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class UMLSThread extends Thread implements Runnable{
 
@@ -38,6 +42,7 @@ public class UMLSThread extends Thread implements Runnable{
     // Information about the drug
     private String drug;
     private String definition;
+    private List<SNOMEDCTAtomRelations> relations;
 
 
     // Class constructor
@@ -47,6 +52,7 @@ public class UMLSThread extends Thread implements Runnable{
         this.UIThread = UIThread;
         this.drug = drug;
         this.requestQueue = Volley.newRequestQueue(this.context);
+        this.relations = new ArrayList<>();
     }
 
     private String BASEURL =
@@ -169,7 +175,8 @@ public class UMLSThread extends Thread implements Runnable{
                         Object gsonResp = gson.fromJson(response, SNOMEDCTAtomBase.class);
                         SNOMEDCTAtomBase snomedctAtomBase = (SNOMEDCTAtomBase) gsonResp;
                         SNOMEDCTAtom atom = snomedctAtomBase.getResult();
-                        String a = atom.getRelations();
+                        String uri = atom.getRelations() + "?apiKey=" + apiKey + "&pageNumber=1";
+                        getAtomRelations(uri);
                         String b = ";";
                     }
                 }, new Response.ErrorListener() {
@@ -179,5 +186,45 @@ public class UMLSThread extends Thread implements Runnable{
             }
         });
         requestQueue.add(stringRequest);
+    }
+
+    public void getAtomRelations(String uri){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        Object gsonResp = gson.fromJson(response, SNOMEDCTAtomRelationsBase.class);
+                        SNOMEDCTAtomRelationsBase snomedctAtomRelationsBase = (SNOMEDCTAtomRelationsBase) gsonResp;
+                        List<SNOMEDCTAtomRelations>  listRelations = snomedctAtomRelationsBase.getResult();
+                        for(int i = 0; i < listRelations.size(); i++)
+                            relations.add(listRelations.get(i));
+                        int pageNumber = snomedctAtomRelationsBase.getPageNumber();
+                        int pageCount = (snomedctAtomRelationsBase.getPageCount() - 1) + pageNumber;
+                        String r = getNextPage(uri, pageNumber + 1);
+                        if(pageNumber < pageCount)
+                            getAtomRelations(r);
+                        else
+                            UIThread.start();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    public String getNextPage(String uri, int pageNumber){
+        return uri.substring(0, 141) + (pageNumber);
+    }
+
+    public String getDefinition(){
+        return this.definition;
+    }
+
+    public List<SNOMEDCTAtomRelations> getRelations() {
+        return this.relations;
     }
 }

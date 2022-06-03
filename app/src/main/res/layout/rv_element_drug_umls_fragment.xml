@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="@string/nregister"
+                android:text="Relation Type:"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="@string/startDate"
+                android:text="Name:"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -62,52 +62,6 @@
                 android:layout_weight="1"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-        </TableRow>
-        <com.google.android.material.divider.MaterialDivider
-            app:dividerColor="#FFFFFF" />
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvChangeType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="@string/changeType"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvChangeTypeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:textColor="@color/white" />
-        </TableRow>
-        <com.google.android.material.divider.MaterialDivider
-            app:dividerColor="#FFFFFF" />
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvChange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="@string/change"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvChangeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:textColor="@color/white" />
         </TableRow>
         <com.google.android.material.divider.MaterialDivider
             app:dividerColor="#FFFFFF" />
