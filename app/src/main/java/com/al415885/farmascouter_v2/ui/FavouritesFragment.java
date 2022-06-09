@@ -12,20 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.al415885.farmascouter_v2.DrugActivity;
 import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterMedFrag;
+import com.al415885.farmascouter_v2.adapters.CRAFDrugs;
 import com.al415885.farmascouter_v2.adapters.OnItemClickListener;
 import com.al415885.farmascouter_v2.adapters.OnLongItemClickListener;
 import com.al415885.farmascouter_v2.db.OrmLiteHelper;
-import com.al415885.farmascouter_v2.results.ResultsMed;
-import com.google.android.material.navigation.NavigationView;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.ArrayList;
@@ -36,8 +33,8 @@ public class FavouritesFragment extends Fragment {
 
     // UI elements
     private RecyclerView rvFavouritesFragment;
-    private List<ResultsMed> rvList;
-    private CustomRecyclerAdapterMedFrag adapter;
+    private List<MedSecond> rvList;
+    private CRAFDrugs adapter;
 
     /* Constructor for creating again the view */
     public FavouritesFragment(){}
@@ -82,12 +79,13 @@ public class FavouritesFragment extends Fragment {
 
     public void setUpRecyclerView(){
         this.rvList = new ArrayList<>();
-        this.adapter = new CustomRecyclerAdapterMedFrag(new OnItemClickListener() {
+        this.adapter = new CRAFDrugs(new OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                ResultsMed med = (ResultsMed) rvList.get(position);
+                MedSecond med = (MedSecond) rvList.get(position);
                 Intent intent = new Intent(getContext(), DrugActivity.class);
                 intent.putExtra("Drug", med);
+                intent.putExtra("Search", med.getSearch());
                 startActivity(intent);
             }
         }, new OnLongItemClickListener() {
@@ -106,9 +104,9 @@ public class FavouritesFragment extends Fragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                RuntimeExceptionDao<ResultsMed, Integer> dao =
+                                RuntimeExceptionDao<MedSecond, Integer> dao =
                                         OrmLiteHelper.getInstance(getContext())
-                                                .getRuntimeDao(ResultsMed.class);
+                                                .getRuntimeDao(MedSecond.class);
                                 dao.delete(rvList.get(position));
                                 rvList.remove(position);
                                 ((MainActivity) requireActivity()).runOnUiThread(new Runnable() {
@@ -137,12 +135,12 @@ public class FavouritesFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                RuntimeExceptionDao<ResultsMed, Integer> dao =
+                RuntimeExceptionDao<MedSecond, Integer> dao =
                         OrmLiteHelper.getInstance(getContext())
-                                .getRuntimeDao(ResultsMed.class);
-                Iterator<ResultsMed> iterator = dao.iterator();
+                                .getRuntimeDao(MedSecond.class);
+                Iterator<MedSecond> iterator = dao.iterator();
                 while (iterator.hasNext()){
-                    ResultsMed drug = iterator.next();
+                    MedSecond drug = iterator.next();
                     rvList.add(drug);
                 }
                 dao.closeLastIterator();

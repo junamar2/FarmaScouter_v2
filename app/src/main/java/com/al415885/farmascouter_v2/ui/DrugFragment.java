@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,21 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.al415885.farmascouter_v2.DrugActivity;
-import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.results.ResultsMed;
-import com.al415885.farmascouter_v2.utils.Documento;
-import com.al415885.farmascouter_v2.utils.Foto;
-import com.al415885.farmascouter_v2.utils.ViaAdministracion;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DrugFragment extends Fragment {
 
     // Class-specific variables
-    private ResultsMed drug;
+    private MedSecond drug;
     // UI elements
     private ImageView imgPack, imgDrug;
     private TextView tvDrugName, tvLab, tvNRegister, tvVTM, tvPrescription, tvDosage, tvDosageForm,
@@ -108,7 +100,7 @@ public class DrugFragment extends Fragment {
      * Method that gets the drug that was clicked
      */
     private void getClickedDrug(){
-        this.drug = (ResultsMed) ((DrugActivity) getActivity()).getIntent().
+        this.drug = (MedSecond) ((DrugActivity) getActivity()).getIntent().
                 getSerializableExtra("Drug");
     }
 

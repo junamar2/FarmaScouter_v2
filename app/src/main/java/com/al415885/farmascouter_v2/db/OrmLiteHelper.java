@@ -3,7 +3,7 @@ package com.al415885.farmascouter_v2.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.al415885.farmascouter_v2.results.ResultsMed;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -27,7 +27,7 @@ public class OrmLiteHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             // TODO: Add all your entities here, to create the tables.
-            TableUtils.createTable(connectionSource, ResultsMed.class);
+            TableUtils.createTable(connectionSource, MedSecond.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,7 @@ public class OrmLiteHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             // TODO: Add all your entities here, to drop and recreate then.
-            TableUtils.dropTable(connectionSource, ResultsMed.class, true);
+            TableUtils.dropTable(connectionSource, MedSecond.class, true);
             onCreate(db, connectionSource);
         } catch (SQLException e) {
             throw new RuntimeException(e);

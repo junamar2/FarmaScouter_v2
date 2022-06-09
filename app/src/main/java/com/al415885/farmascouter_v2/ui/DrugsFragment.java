@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,17 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.al415885.farmascouter_v2.DrugActivity;
 import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterMedFrag;
+import com.al415885.farmascouter_v2.adapters.CRAFDrugs;
 import com.al415885.farmascouter_v2.adapters.OnItemClickListener;
 import com.al415885.farmascouter_v2.adapters.OnLongItemClickListener;
 import com.al415885.farmascouter_v2.db.OrmLiteHelper;
-import com.al415885.farmascouter_v2.results.ResultsMed;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.al415885.farmascouter_v2.threads.CIMAThread;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class DrugsFragment extends Fragment {
@@ -41,8 +38,8 @@ public class DrugsFragment extends Fragment {
 
     // UI elements
     private RecyclerView rvDrugsFragment;
-    private List<ResultsMed> rvList;
-    private CustomRecyclerAdapterMedFrag adapter;
+    private List<MedSecond> rvList;
+    private CRAFDrugs adapter;
     private ImageButton imbSearch;
     private EditText etSearch;
     private View view;
@@ -122,7 +119,7 @@ public class DrugsFragment extends Fragment {
                     }
                 });
                 cimaThread = new CIMAThread(2, getContext(), UIThread);
-                cimaThread.setSearchMedName(etSearch.getText().toString().trim().toLowerCase());
+                cimaThread.setSearchMedName(search.trim().toLowerCase());
                 ((MainActivity) requireActivity()).setCimaThreadDR(cimaThread);
                 cimaThread.start();
                 pbDrugs.setVisibility(View.VISIBLE);
@@ -135,7 +132,7 @@ public class DrugsFragment extends Fragment {
     }
 
     private void setNavigationDrawerCheckedItem() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             MenuItem item = ((MainActivity) requireActivity()).getNavigationDrawer().getMenu().getItem(i);
             if(item.getItemId() == R.id.navigation_drugs){
                 item.setChecked(true);
@@ -146,10 +143,10 @@ public class DrugsFragment extends Fragment {
 
     public void setUpRecyclerView(){
         this.rvList = new ArrayList<>();
-        this.adapter = new CustomRecyclerAdapterMedFrag(new OnItemClickListener() {
+        this.adapter = new CRAFDrugs(new OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                ResultsMed med = (ResultsMed) rvList.get(position);
+                MedSecond med = (MedSecond) rvList.get(position);
                 Intent intent = new Intent(getContext(), DrugActivity.class);
                 intent.putExtra("Drug", med);
                 intent.putExtra("Search", search);
@@ -158,7 +155,7 @@ public class DrugsFragment extends Fragment {
         }, new OnLongItemClickListener() {
             @Override
             public void onLongClick(int position) {
-                ResultsMed drug = (ResultsMed) rvList.get(position);
+                MedSecond drug = (MedSecond) rvList.get(position);
                 showAddFavouritesDialog(drug);
             }
         }, this.rvList);
@@ -169,7 +166,8 @@ public class DrugsFragment extends Fragment {
     }
 
     /** Method that shows a dialog in order to add the drug to favourites */
-    private void showAddFavouritesDialog(ResultsMed drug){
+    private void showAddFavouritesDialog(MedSecond drug){
+        drug.setSearch(search);
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         adb.setView(R.layout.favourites_dialog);
         adb.setTitle(((MainActivity) requireActivity()).getResources()
@@ -183,9 +181,9 @@ public class DrugsFragment extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        RuntimeExceptionDao<ResultsMed, Integer> dao =
+                        RuntimeExceptionDao<MedSecond, Integer> dao =
                                 OrmLiteHelper.getInstance(getContext())
-                                        .getRuntimeDao(ResultsMed.class);
+                                        .getRuntimeDao(MedSecond.class);
                         dao.createOrUpdate(drug);
                     }
                 }).start();

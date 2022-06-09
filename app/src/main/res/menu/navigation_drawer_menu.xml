@@ -12,6 +12,11 @@
         android:title="Search Drugs"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/navigation_interactions"
+        android:icon="@drawable/ic_interactions"
+        android:title="Interactions Checker"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/navigation_favourites"
         android:icon="@drawable/ic_favourite"
         android:title="Favourites"

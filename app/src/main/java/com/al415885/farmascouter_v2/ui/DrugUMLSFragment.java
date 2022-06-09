@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,32 +14,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.al415885.farmascouter_v2.DrugActivity;
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterDrugUMLSFrag;
-import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterHomeFrag;
-import com.al415885.farmascouter_v2.adapters.CustomRecyclerAdapterMedFrag;
-import com.al415885.farmascouter_v2.mappings.SNOMEDCTAtomRelations;
-import com.al415885.farmascouter_v2.results.ResultsMed;
-import com.al415885.farmascouter_v2.results.ResultsMedPSuministro;
+import com.al415885.farmascouter_v2.adapters.CRAFDrug;
+import com.al415885.farmascouter_v2.models.umls.thirdlevel.mth.thirdlevel.snomedct.fourthlevel.SNOMEDCTFourthRelations;
 import com.al415885.farmascouter_v2.threads.UMLSThread;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class DrugUMLSFragment extends Fragment {
 
     // UI elements
     private TextView tvDefinition, tvRelations, tvDefinitionTitle, tvNoInfo;
     private RecyclerView rvRelations;
-    private List<SNOMEDCTAtomRelations> rvList;
-    private CustomRecyclerAdapterDrugUMLSFrag adapter;
+    private List<SNOMEDCTFourthRelations> rvList;
+    private CRAFDrug adapter;
 
     // Threads
     private UMLSThread umlsThread;
 
     // Information about the drug
     private String definition;
-    private List<SNOMEDCTAtomRelations> relations;
+    private List<SNOMEDCTFourthRelations> relations;
 
     /* Constructor for creating again the view */
     public DrugUMLSFragment(){ }
@@ -90,7 +83,7 @@ public class DrugUMLSFragment extends Fragment {
             }
         });
         String search = (String) ((DrugActivity) requireActivity()).getIntent().getSerializableExtra("Search");
-        this.umlsThread = new UMLSThread(0, getContext(), UIThread, search);
+        this.umlsThread = new UMLSThread(0, getContext(), UIThread, search, null);
         this.umlsThread.start();
         return view;
     }
@@ -120,7 +113,7 @@ public class DrugUMLSFragment extends Fragment {
     private void initialiseVariables(){
         this.relations = new ArrayList<>();
         this.rvList = new ArrayList<>();
-        this.adapter = new CustomRecyclerAdapterDrugUMLSFrag(this.rvList);
+        this.adapter = new CRAFDrug(this.rvList);
     }
 
     /**

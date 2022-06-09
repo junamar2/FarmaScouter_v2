@@ -1,15 +1,13 @@
 package com.al415885.farmascouter_v2.threads;
 
 import android.content.Context;
-import android.media.JetPlayer;
 
-import com.al415885.farmascouter_v2.MainActivity;
-import com.al415885.farmascouter_v2.MedPSuministro;
-import com.al415885.farmascouter_v2.MedRCambios;
-import com.al415885.farmascouter_v2.Medicamento;
-import com.al415885.farmascouter_v2.results.ResultsMed;
-import com.al415885.farmascouter_v2.results.ResultsMedPSuministro;
-import com.al415885.farmascouter_v2.results.ResultsRCambios;
+import com.al415885.farmascouter_v2.models.cima.firstlevel.MedPSFirst;
+import com.al415885.farmascouter_v2.models.cima.firstlevel.MedRCFirst;
+import com.al415885.farmascouter_v2.models.cima.firstlevel.MedFirst;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedPSSecond;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedRCSecond;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,7 +20,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class CIMAThread extends Thread implements Runnable{
@@ -33,9 +30,9 @@ public class CIMAThread extends Thread implements Runnable{
     private Context context;
     private Object gsonResp;
     private Thread UIThread;
-    private List<ResultsMedPSuministro> rvListPSum;
-    private List<ResultsRCambios> rvListRCambios;
-    private List<ResultsMed> rvListMed;
+    private List<MedPSSecond> rvListPSum;
+    private List<MedRCSecond> rvListRCambios;
+    private List<MedSecond> rvListMed;
     private String searchMedName;
 
     // Codes for threads
@@ -81,8 +78,8 @@ public class CIMAThread extends Thread implements Runnable{
                         gsonResp = gson.fromJson(response, cl);
                         switch (threadType){
                             case PSUMINISTRO:
-                                MedPSuministro medPSum = (MedPSuministro) gsonResp;
-                                List<ResultsMedPSuministro> resPSum = medPSum.getResultados();
+                                MedPSFirst medPSum = (MedPSFirst) gsonResp;
+                                List<MedPSSecond> resPSum = medPSum.getResultados();
                                 if(!resPSum.isEmpty()) {
                                     for (int i = 0; i < resPSum.size(); i++)
                                         rvListPSum.add(resPSum.get(i));
@@ -96,13 +93,13 @@ public class CIMAThread extends Thread implements Runnable{
                                 }
                                 break;
                             case RCAMBIOS:
-                                MedRCambios medRCambios = (MedRCambios) gsonResp;
-                                List<ResultsRCambios> resRcambios = medRCambios.getResultados();
+                                MedRCFirst medRCFirst = (MedRCFirst) gsonResp;
+                                List<MedRCSecond> resRcambios = medRCFirst.getResultados();
                                 if(!resRcambios.isEmpty()) {
                                     for (int i = 0; i < resRcambios.size(); i++)
                                         rvListRCambios.add(resRcambios.get(i));
-                                    if(medRCambios.pagina < 30)
-                                        setPaginaURL(medRCambios.pagina + 1);
+                                    if(medRCFirst.pagina < 30)
+                                        setPaginaURL(medRCFirst.pagina + 1);
                                     else
                                         UIThread.start();
                                 }
@@ -111,13 +108,15 @@ public class CIMAThread extends Thread implements Runnable{
                                 }
                                 break;
                             case DRUGSEARCH:
-                                Medicamento medicamento = (Medicamento) gsonResp;
-                                List<ResultsMed> resMed = medicamento.getResultados();
+                                MedFirst medFirst = (MedFirst) gsonResp;
+                                List<MedSecond> resMed = medFirst.getResultados();
                                 if(!resMed.isEmpty()) {
-                                    for (int i = 0; i < resMed.size(); i++)
+                                    for (int i = 0; i < resMed.size(); i++) {
+                                        resMed.get(i).setSearch(searchMedName);
                                         rvListMed.add(resMed.get(i));
-                                    if(medicamento.pagina < 30)
-                                        setPaginaURL(medicamento.pagina + 1);
+                                    }
+                                    if(medFirst.pagina < 30)
+                                        setPaginaURL(medFirst.pagina + 1);
                                     else
                                         UIThread.start();
                                 }
@@ -142,7 +141,7 @@ public class CIMAThread extends Thread implements Runnable{
         switch (this.threadType){
             case PSUMINISTRO:
                 this.url = URLPSUMINISTRO;
-                httpRequest(this.url, MedPSuministro.class);
+                httpRequest(this.url, MedPSFirst.class);
                 break;
             case RCAMBIOS:
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -151,12 +150,12 @@ public class CIMAThread extends Thread implements Runnable{
                 String date = dateFormat.format(cal.getTime());
                 this.URLRCAMBIOS = this.URLRCAMBIOS + date;
                 this.url = URLRCAMBIOS + "&pagina=1";
-                httpRequest(this.url, MedRCambios.class);
+                httpRequest(this.url, MedRCFirst.class);
                 break;
             case DRUGSEARCH:
                 this.url = URLSEARCHMEDNAME + this.searchMedName +
                         "&pagina=1";
-                httpRequest(this.url, Medicamento.class);
+                httpRequest(this.url, MedFirst.class);
                 break;
             default:
                 break;
@@ -171,15 +170,15 @@ public class CIMAThread extends Thread implements Runnable{
         return this.gsonResp;
     }
 
-    public List<ResultsMed> getRvListMed() {
+    public List<MedSecond> getRvListMed() {
         return this.rvListMed;
     }
 
-    public List<ResultsMedPSuministro> getRvListPSum() {
+    public List<MedPSSecond> getRvListPSum() {
         return this.rvListPSum;
     }
 
-    public List<ResultsRCambios> getRvListRCambios() {
+    public List<MedRCSecond> getRvListRCambios() {
         return this.rvListRCambios;
     }
 
@@ -187,16 +186,16 @@ public class CIMAThread extends Thread implements Runnable{
         switch (this.threadType){
             case PSUMINISTRO:
                 this.url = URLPSUMINISTRO.substring(0, 43) + "?pagina=" + String.valueOf(pagina);
-                httpRequest(this.url, MedPSuministro.class);
+                httpRequest(this.url, MedPSFirst.class);
                 break;
             case RCAMBIOS:
                 this.url = this.url.substring(0, 72) + String.valueOf(pagina);
-                httpRequest(this.url, MedRCambios.class);
+                httpRequest(this.url, MedRCFirst.class);
                 break;
             case DRUGSEARCH:
                 this.url = URLSEARCHMEDNAME.substring(0, 52) + this.searchMedName +
                         "&pagina=" + String.valueOf(pagina);
-                httpRequest(this.url, Medicamento.class);
+                httpRequest(this.url, MedFirst.class);
                 break;
             default:
                 break;

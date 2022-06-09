@@ -19,10 +19,9 @@ import android.widget.AdapterView;
 import com.al415885.farmascouter_v2.threads.CIMAThread;
 import com.al415885.farmascouter_v2.ui.DrugsFragment;
 import com.al415885.farmascouter_v2.ui.FavouritesFragment;
-import com.al415885.farmascouter_v2.ui.HomeFragmentPSum;
+import com.al415885.farmascouter_v2.ui.InteractionsFragment;
 import com.al415885.farmascouter_v2.ui.SettingsFragment;
-import com.al415885.farmascouter_v2.ui.ViewPagerFragment;
-import com.al415885.farmascouter_v2.ui.ViewPagerFragmentHome;
+import com.al415885.farmascouter_v2.ui.VPHomeFragment;
 import com.google.android.material.navigation.NavigationView;
 
 /**
@@ -118,12 +117,16 @@ public class MainActivity extends AppCompatActivity
         Class<? extends Fragment> fragmentClass = null;
         switch (item.getItemId()){
             case R.id.navigation_home:
-                fragmentClass = ViewPagerFragmentHome.class;
+                fragmentClass = VPHomeFragment.class;
                 getSupportActionBar().setTitle("Home");
                 break;
             case R.id.navigation_drugs:
                 fragmentClass = DrugsFragment.class;
                 getSupportActionBar().setTitle("Search Drugs");
+                break;
+            case R.id.navigation_interactions:
+                fragmentClass = InteractionsFragment.class;
+                getSupportActionBar().setTitle("Interactions Checker");
                 break;
             case R.id.navigation_favourites:
                 fragmentClass = FavouritesFragment.class;
@@ -246,7 +249,7 @@ public class MainActivity extends AppCompatActivity
     private void loadFragment(){
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.fcv_navigation_drawer, ViewPagerFragmentHome.class, null)
+                .replace(R.id.fcv_navigation_drawer, VPHomeFragment.class, null)
                 .commit();
     }
 

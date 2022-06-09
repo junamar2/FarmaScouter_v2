@@ -6,6 +6,9 @@
     <!-- DrugsFragment Strings -->
     <string name="searchingDrugs">Searching for drugs. This may take a wile</string>
     <string name="NoResults">No results found, try again</string>
+    <!-- DrugsFragment Strings -->
+    <string name="searchingInteractions">Searching for interactions. This may take a wile</string>
+    <string name="NoInteractions">No interactions found, try again or try another drug</string>
     <!-- General Strings -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
