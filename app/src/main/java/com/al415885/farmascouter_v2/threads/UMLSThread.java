@@ -44,7 +44,8 @@ public class UMLSThread extends Thread implements Runnable{
     // Information about the drug
     private String drug;
     private String definition;
-    private List<SNOMEDCTFourthRelations> relations;
+    private List<String> listIsa;
+    private List<String> listCause;
     private String RXNORMui;
 
     // Thread types
@@ -59,9 +60,10 @@ public class UMLSThread extends Thread implements Runnable{
         this.UIThread = UIThread;
         this.drug = drug;
         this.requestQueue = Volley.newRequestQueue(this.context);
-        this.relations = new ArrayList<>();
         this.language = Locale.getDefault().getLanguage();
         this.rxnormThread = rxnormThread;
+        this.listIsa = new ArrayList<>();
+        this.listCause = new ArrayList<>();
     }
 
     private String BASEURL =
@@ -230,7 +232,11 @@ public class UMLSThread extends Thread implements Runnable{
                         SNOMEDCTThirdRelations snomedctThirdRelations = (SNOMEDCTThirdRelations) gsonResp;
                         List<SNOMEDCTFourthRelations>  listRelations = snomedctThirdRelations.getResult();
                         for(int i = 0; i < listRelations.size(); i++)
-                            relations.add(listRelations.get(i));
+                            if(listRelations.get(i).getAdditionalRelationLabel()
+                                    .equals("causative_agent_of"))
+                                listCause.add(listRelations.get(i).getRelatedIdName());
+                            else if(listRelations.get(i).getAdditionalRelationLabel().equals("isa"))
+                                listIsa.add(listRelations.get(i).getRelatedIdName());
                         int pageNumber = snomedctThirdRelations.getPageNumber();
                         int pageCount = (snomedctThirdRelations.getPageCount() - 1) + pageNumber;
                         String r = getNextPage(uri, pageNumber + 1);
@@ -284,11 +290,16 @@ public class UMLSThread extends Thread implements Runnable{
         return this.definition;
     }
 
-    public List<SNOMEDCTFourthRelations> getRelations() {
-        return this.relations;
+    public List<String> getListCause() {
+        return this.listCause;
+    }
+
+    public List<String> getListIsa() {
+        return this.listIsa;
     }
 
     public String getRXNORMui(){
         return this.RXNORMui;
     }
+
 }

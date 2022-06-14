@@ -6,7 +6,11 @@
     <!-- DrugsFragment Strings -->
     <string name="searchingDrugs">Searching for drugs. This may take a wile</string>
     <string name="NoResults">No results found, try again</string>
-    <!-- DrugsFragment Strings -->
+    <!-- DrugFragmentUMLS Strings -->
+    <string name="causes">This drug has relation with this causes</string>
+    <string name="isa">This drug is known as</string>
+    <string name="definition">Definition</string>
+    <!-- InteractionFragment Strings -->
     <string name="searchingInteractions">Searching for interactions. This may take a wile</string>
     <string name="NoInteractions">No interactions found, try again or try another drug</string>
     <!-- General Strings -->
@@ -35,7 +39,10 @@
     <string name="yourProfileNameTitle">Name</string>
     <string name="yourProfileRoleTitle">Role</string>
     <string name="yourProfileRoleSummary">Select your role</string>
-    <!-- Strings MedPSuministro -->
+    <string name="about">About</string>
+    <string name="aboutTitle">App information</string>
+    <string name="aboutSummary">See App information details</string>
+    <!-- Strings MedPS -->
     <string name="nationalCode">National code:</string>
     <string name="name">Name:</string>
     <string name="typeof">Type of supply problem:</string>
@@ -43,10 +50,10 @@
     <string name="endDate">End date:</string>
     <string name="active">Active:</string>
     <string name="remarks">Remarks:</string>
-    <!-- Strings MedRCambios -->
+    <!-- Strings MedRC -->
     <string name="changeType">Change type:</string>
     <string name="change">Change:</string>
-    <!-- String Medicamento-->
+    <!-- String Med-->
     <string name="nregister">Register number:</string>
     <string name="titularLab">Titular Lab:</string>
     <string name="cpresc">Prescription conditions:</string>

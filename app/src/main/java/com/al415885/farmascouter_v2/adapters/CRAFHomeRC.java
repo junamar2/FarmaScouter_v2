@@ -41,7 +41,7 @@ public class CRAFHomeRC
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rv_element_home_fragment_rcambios, parent, false);
+                .inflate(R.layout.rv_element_home_fragment_rc, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

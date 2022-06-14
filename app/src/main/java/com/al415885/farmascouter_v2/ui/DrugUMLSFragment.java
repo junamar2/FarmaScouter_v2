@@ -4,18 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.al415885.farmascouter_v2.DrugActivity;
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.adapters.CRAFDrug;
-import com.al415885.farmascouter_v2.models.umls.thirdlevel.mth.thirdlevel.snomedct.fourthlevel.SNOMEDCTFourthRelations;
 import com.al415885.farmascouter_v2.threads.UMLSThread;
 
 import java.util.ArrayList;
@@ -24,17 +22,16 @@ import java.util.List;
 public class DrugUMLSFragment extends Fragment {
 
     // UI elements
-    private TextView tvDefinition, tvRelations, tvDefinitionTitle, tvNoInfo;
-    private RecyclerView rvRelations;
-    private List<SNOMEDCTFourthRelations> rvList;
-    private CRAFDrug adapter;
+    private TextView tvDefinition, tvIsa, tvDefinitionTitle, tvNoInfo, tvCause;
+    private ListView lvCauses, lvIsa;
 
     // Threads
     private UMLSThread umlsThread;
 
     // Information about the drug
     private String definition;
-    private List<SNOMEDCTFourthRelations> relations;
+    private List<String> listCause;
+    private List<String> listIsa;
 
     /* Constructor for creating again the view */
     public DrugUMLSFragment(){ }
@@ -54,9 +51,7 @@ public class DrugUMLSFragment extends Fragment {
         findUIElements(view);
         // Initialise variables
         initialiseVariables();
-        // Set Up Recycler View
-        setUpRecyclerView();
-        // Return the view
+
         requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -67,16 +62,23 @@ public class DrugUMLSFragment extends Fragment {
             @Override
             public void run() {
                 definition = umlsThread.getDefinition();
-                rvList.addAll(umlsThread.getRelations());
+                listCause = umlsThread.getListCause();
+                listIsa = umlsThread.getListIsa();
                 if(isVisible()) {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            ArrayAdapter<String> adapterCause = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listCause);
+                            lvCauses.setAdapter(adapterCause);
+                            adapterCause.notifyDataSetChanged();
+                            ArrayAdapter<String> adapterIsa = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listIsa);
+                            lvIsa.setAdapter(adapterIsa);
+                            adapterIsa.notifyDataSetChanged();
                             tvNoInfo.setVisibility(View.INVISIBLE);
-                            tvRelations.setVisibility(View.VISIBLE);
+                            tvIsa.setVisibility(View.VISIBLE);
+                            tvCause.setVisibility(View.VISIBLE);
                             tvDefinitionTitle.setVisibility(View.VISIBLE);
                             tvDefinition.setText(definition);
-                            adapter.notifyDataSetChanged();
                         }
                     });
                 }
@@ -85,6 +87,7 @@ public class DrugUMLSFragment extends Fragment {
         String search = (String) ((DrugActivity) requireActivity()).getIntent().getSerializableExtra("Search");
         this.umlsThread = new UMLSThread(0, getContext(), UIThread, search, null);
         this.umlsThread.start();
+        // Return the view
         return view;
     }
 
@@ -101,28 +104,19 @@ public class DrugUMLSFragment extends Fragment {
      */
     private void findUIElements(View view){
         this.tvDefinition = view.findViewById(R.id.tvDefinitionValue);
-        this.rvRelations = view.findViewById(R.id.rvRelations);
         this.tvDefinitionTitle = view.findViewById(R.id.tvDefinition);
         this.tvNoInfo = view.findViewById(R.id.tvNothingToShow);
-        this.tvRelations = view.findViewById(R.id.tvRelations);
+        this.tvIsa = view.findViewById(R.id.tvIsa);
+        this.tvCause = view.findViewById(R.id.tvCause);
+        this.lvCauses = view.findViewById(R.id.lvCauses);
+        this.lvIsa = view.findViewById(R.id.lvIsa);
     }
 
     /**
      * Method that initialise the class-specific variables
      */
     private void initialiseVariables(){
-        this.relations = new ArrayList<>();
-        this.rvList = new ArrayList<>();
-        this.adapter = new CRAFDrug(this.rvList);
-    }
-
-    /**
-     * Method that sets up tje Recycler View
-     */
-    private void setUpRecyclerView(){
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(),
-                RecyclerView.VERTICAL, false);
-        this.rvRelations.setAdapter(this.adapter);
-        this.rvRelations.setLayoutManager(manager);
+        this.listIsa = new ArrayList<>();
+        this.listCause = new ArrayList<>();
     }
 }

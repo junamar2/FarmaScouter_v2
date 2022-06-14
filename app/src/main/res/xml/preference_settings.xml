@@ -21,4 +21,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/about">
+
+        <Preference
+            android:key="keyAbout"
+            android:summary="@string/aboutSummary"
+            android:title="@string/aboutTitle">
+        </Preference>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

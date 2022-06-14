@@ -3,6 +3,7 @@ package com.al415885.farmascouter_v2.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ public class CRAFHomePS extends RecyclerView.Adapter<CRAFHomePS.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_element_home_fragment_psum, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_element_home_fragment_ps, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -56,8 +57,8 @@ public class CRAFHomePS extends RecyclerView.Adapter<CRAFHomePS.ViewHolder> {
         holder.tvStartDate.setText(String.valueOf(list.get(position).getFini()));
         holder.tvEndDate.setText(String.valueOf(list.get(position).getFfin()));
         holder.tvTypeOf.setText(String.valueOf(list.get(position).getTipoProblemaSuministro()));
-        holder.tvActive.setText(String.valueOf(list.get(position).isActivo()));
         holder.tvRemarks.setText(list.get(position).getObserv());
+        holder.cbActive.setChecked(list.get(position).isActivo());
     }
 
     /** Returns the total number of items in the data set held by the adapter
@@ -77,7 +78,8 @@ public class CRAFHomePS extends RecyclerView.Adapter<CRAFHomePS.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         /* The elements of the holder */
-        public TextView tvCn, tvName, tvStartDate, tvEndDate, tvTypeOf, tvActive, tvRemarks;
+        public TextView tvCn, tvName, tvStartDate, tvEndDate, tvTypeOf, tvRemarks;
+        public CheckBox cbActive;
 
         /** Constructor for the class */
         public ViewHolder(View view){
@@ -87,7 +89,7 @@ public class CRAFHomePS extends RecyclerView.Adapter<CRAFHomePS.ViewHolder> {
             this.tvStartDate = (TextView) view.findViewById(R.id.tvStartDateValue);
             this.tvEndDate = (TextView) view.findViewById(R.id.tvEndDateValue);
             this.tvTypeOf = (TextView) view.findViewById(R.id.tvTypeOfValue);
-            this.tvActive = (TextView) view.findViewById(R.id.tvActiveValue);
+            this.cbActive = (CheckBox) view.findViewById(R.id.cbActive);
             this.tvRemarks = (TextView) view.findViewById(R.id.tvRemarksValue);
         }
     }

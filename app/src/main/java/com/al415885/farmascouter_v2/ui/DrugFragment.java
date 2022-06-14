@@ -28,7 +28,6 @@ public class DrugFragment extends Fragment {
                         tvSimpleDosage, tvWays, tvDocument, tvState, tvNonReplaceable;
     private CheckBox cbCommercialised, cbPrescription, cbGeneric, cbDriving, cbTriangle, cbOrphan,
                         cbBiosimilar, cbPSum, cbNotes, cbEMA, cbMaterialsInf;
-    private ListView lvWays;
 
     /* Constructor for creating again the view */
     public DrugFragment(){}
@@ -111,10 +110,16 @@ public class DrugFragment extends Fragment {
         ((DrugActivity) requireActivity()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Picasso.get().load(drug.getFotos().get(0).getUrl()).
-                        fit().into(imgPack);
-                Picasso.get().load(drug.getFotos().get(1).getUrl())
-                        .fit().into(imgDrug);
+                if(drug.getFotos() != null && drug.getFotos().size() == 1){
+                    Picasso.get().load(drug.getFotos().get(0).getUrl()).
+                            fit().into(imgPack);
+                }
+                else if(drug.getFotos() != null && drug.getFotos().size() == 2){
+                    Picasso.get().load(drug.getFotos().get(0).getUrl()).
+                            fit().into(imgPack);
+                    Picasso.get().load(drug.getFotos().get(1).getUrl())
+                            .fit().into(imgDrug);
+                }
                 tvDrugName.setText(drug.getNombre());
                 tvLab.setText(drug.getLabtitular());
                 tvNRegister.setText(drug.getNregistro());
@@ -130,7 +135,12 @@ public class DrugFragment extends Fragment {
                 }
                 else textWays = "N/A";
                 tvWays.setText(textWays);
-                tvDocument.setText(drug.getDocs().get(0).getUrl());
+                String textDocs = "";
+                if(drug.getDocs().size() != 0)
+                    textDocs = drug.getDocs().get(0).getUrl();
+                else
+                    textDocs = "N/A";
+                tvDocument.setText(textDocs);
                 tvState.setText(String.valueOf(drug.getEstado().getAut()));
                 String textNonReplaceable = "";
                 if(drug.getNoSustituible() != null) {
@@ -139,7 +149,6 @@ public class DrugFragment extends Fragment {
                 }
                 else textNonReplaceable = "N/A";
                 tvNonReplaceable.setText(textNonReplaceable);
-                tvDocument.setText(drug.getDocs().get(0).getUrl());
                 cbCommercialised.setChecked(drug.isComerc());
                 cbPrescription.setChecked(drug.isReceta());
                 cbGeneric.setChecked(drug.isGenerico());

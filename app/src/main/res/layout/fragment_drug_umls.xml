@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Definition"
+        android:text="@string/definition"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,28 +44,50 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDefinition" />
 
     <TextView
-        android:id="@+id/tvRelations"
+        android:id="@+id/tvIsa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Relations of the drug"
+        android:text="@string/isa"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDefinitionValue" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRelations"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
+    <TextView
+        android:id="@+id/tvCause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/causes"
+        android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRelations" />
+        app:layout_constraintTop_toBottomOf="@+id/lvIsa" />
+
+    <ListView
+        android:id="@+id/lvCauses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCause"
+        app:layout_constraintVertical_bias="0.0"
+        android:maxHeight="200dp"/>
+
+    <ListView
+        android:id="@+id/lvIsa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvIsa"
+        android:maxHeight="200dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

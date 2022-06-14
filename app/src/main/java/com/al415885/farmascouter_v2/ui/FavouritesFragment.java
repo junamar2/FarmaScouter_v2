@@ -68,7 +68,7 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void setNavigationDrawerCheckedItem() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             MenuItem item = ((MainActivity) requireActivity()).getNavigationDrawer().getMenu().getItem(i);
             if(item.getItemId() == R.id.navigation_favourites){
                 item.setChecked(true);

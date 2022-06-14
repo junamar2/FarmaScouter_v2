@@ -8,7 +8,8 @@
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/drawable/ic_mono_metacontact_unknown.xml" value="0.2203125" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/drawable/rv_element_shape.xml" value="0.2203125" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/drawable/search_bar_shape.xml" value="0.2203125" />
-        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_drug.xml" value="0.25" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_about.xml" value="0.22" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_drug.xml" value="0.2" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_main.xml" value="0.21" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/activity_view_pager2.xml" value="0.36277173913043476" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/dialog_create_profile.xml" value="0.33" />
@@ -28,6 +29,7 @@
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_drug_fragment.xml" value="0.22" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_drug_umls_fragment.xml" value="0.25" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_home_fragment.xml" value="0.2" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_home_fragment_ps.xml" value="0.33" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_home_fragment_psum.xml" value="0.25" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_home_fragment_rcambios.xml" value="0.1" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/layout/rv_element_med.xml" value="0.1213768115942029" />
@@ -39,7 +41,7 @@
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/menu/navigation_drawer_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1125" />
         <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1125" />
-        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/xml/preference_settings.xml" value="0.1716485507246377" />
+        <entry key="..\:/Users/navar/AndroidStudioProjects/FarmaScouter_v2/app/src/main/res/xml/preference_settings.xml" value="0.21" />
         <entry key="..\:/Users/navar/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.20625" />
         <entry key="..\:/Users/navar/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_2.xml" value="0.20625" />
       </map>
