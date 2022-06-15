@@ -35,7 +35,7 @@ public class UMLSThread extends Thread implements Runnable{
     private int threadType;
     private Context context;
     private Thread UIThread;
-    private RXNORMThread rxnormThread;
+    private Bio2RdfThread bio2RdfThread;
     private static final String apiKey = "c6436cfb-eb6e-4e19-ab44-277977ae5a2e";
     private String language;
 
@@ -46,7 +46,7 @@ public class UMLSThread extends Thread implements Runnable{
     private String definition;
     private List<String> listIsa;
     private List<String> listCause;
-    private String RXNORMui;
+    private String drugbankui;
 
     // Thread types
     private static final int INTERACTIONSTHREAD = 1;
@@ -54,14 +54,14 @@ public class UMLSThread extends Thread implements Runnable{
 
 
     // Class constructor
-    public UMLSThread(int threadType, Context context, Thread UIThread, String drug, RXNORMThread rxnormThread){
+    public UMLSThread(int threadType, Context context, Thread UIThread, String drug, Bio2RdfThread bio2RdfThread){
         this.threadType = threadType;
         this.context = context;
         this.UIThread = UIThread;
         this.drug = drug;
         this.requestQueue = Volley.newRequestQueue(this.context);
         this.language = Locale.getDefault().getLanguage();
-        this.rxnormThread = rxnormThread;
+        this.bio2RdfThread = bio2RdfThread;
         this.listIsa = new ArrayList<>();
         this.listCause = new ArrayList<>();
     }
@@ -162,7 +162,7 @@ public class UMLSThread extends Thread implements Runnable{
                 uri = mthSecond.getAtoms() + "?apiKey=" + apiKey + "&sabs=SNOMEDCT_US";
         }
         else{
-            uri = mthSecond.getAtoms() + "?apiKey=" + apiKey + "&sabs=RXNORM";
+            uri = mthSecond.getAtoms() + "?apiKey=" + apiKey + "&sabs=DRUGBANK";
         }
         StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
                 new Response.Listener<String>() {
@@ -185,7 +185,8 @@ public class UMLSThread extends Thread implements Runnable{
                                 }
                             }
                             else{
-                                RXNORMRequest(atoms.get(i));
+                                DRUGBANKRequest(atoms.get(i));
+                                break;
                             }
 
                         }
@@ -254,7 +255,7 @@ public class UMLSThread extends Thread implements Runnable{
         requestQueue.add(stringRequest);
     }
 
-    public void RXNORMRequest(MTHFourthAtoms mthFourthAtoms){
+    public void DRUGBANKRequest(MTHFourthAtoms mthFourthAtoms){
         String sourceConcept = mthFourthAtoms.getSourceConcept() + "?apiKey=" + apiKey;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, sourceConcept,
                 new Response.Listener<String>() {
@@ -264,9 +265,9 @@ public class UMLSThread extends Thread implements Runnable{
                         Object gsonResp = gson.fromJson(response, RXNORMFirstAtoms.class);
                         RXNORMFirstAtoms snomedctAtomBase = (RXNORMFirstAtoms) gsonResp;
                         RXNORMSecondAtom atom = snomedctAtomBase.getResult();
-                        RXNORMui = atom.getUi();
-                        rxnormThread.setRxnormui(RXNORMui);
-                        rxnormThread.start();
+                        drugbankui = atom.getUi();
+                        bio2RdfThread.setDRUGBANKui(drugbankui);
+                        bio2RdfThread.start();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -298,8 +299,8 @@ public class UMLSThread extends Thread implements Runnable{
         return this.listIsa;
     }
 
-    public String getRXNORMui(){
-        return this.RXNORMui;
+    public String getDRUGBANKui(){
+        return this.drugbankui;
     }
 
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,7 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
-import com.al415885.farmascouter_v2.threads.RXNORMThread;
+import com.al415885.farmascouter_v2.threads.Bio2RdfThread;
 import com.al415885.farmascouter_v2.threads.UMLSThread;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class InteractionsFragment extends Fragment {
 
     //Threads
     private Thread UIThread;
-    private RXNORMThread rxnormThread;
+    private Bio2RdfThread bio2RdfThread;
     private UMLSThread umlsThread;
 
     // Class-specific variables
@@ -74,12 +75,17 @@ public class InteractionsFragment extends Fragment {
                 UIThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<String> list = rxnormThread.getInteractions();
+                        List<String> list = bio2RdfThread.getInteractions();
                         if(isVisible()) {
                             if(list.isEmpty()){
-                                pbInteractions.setVisibility(View.INVISIBLE);
-                                tvPBInteractions.setVisibility(View.INVISIBLE);
-                                tvNoInteractions.setVisibility(View.VISIBLE);
+                                requireActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        pbInteractions.setVisibility(View.INVISIBLE);
+                                        tvPBInteractions.setVisibility(View.INVISIBLE);
+                                        tvNoInteractions.setVisibility(View.VISIBLE);
+                                    }
+                                });
                             }
                             else {
                                 requireActivity().runOnUiThread(new Runnable() {
@@ -96,13 +102,20 @@ public class InteractionsFragment extends Fragment {
                         }
                     }
                 });
-                rxnormThread = new RXNORMThread(getContext(), UIThread);
-                umlsThread = new UMLSThread(1, getContext(), null, search, rxnormThread);
+                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread);
+                umlsThread = new UMLSThread(1, getContext(), null, search, bio2RdfThread);
                 umlsThread.start();
                 tvNoInteractions.setVisibility(View.INVISIBLE);
                 pbInteractions.setVisibility(View.VISIBLE);
                 tvPBInteractions.setVisibility(View.VISIBLE);
                 pbInteractions.animate();
+            }
+        });
+
+        this.lvInteractions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String a = "";
             }
         });
 
