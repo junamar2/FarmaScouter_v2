@@ -1,5 +1,6 @@
-package com.al415885.farmascouter_v2.bio2rdf;
+package com.al415885.farmascouter_v2.models.bio2rdf.thirdlevel.interactions.firstlevel;
 
+import com.al415885.farmascouter_v2.models.bio2rdf.thirdlevel.interactions.secondlevel.InteractionBio2RdfSecond;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

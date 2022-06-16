@@ -47,46 +47,24 @@ public class DrugUMLSFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         /* Creates the view */
         View view = inflater.inflate(R.layout.fragment_drug_umls, container, false);
+
         // Find UI elements
         findUIElements(view);
+
         // Initialise variables
         initialiseVariables();
 
+        // Set the TextView visible
         requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 tvNoInfo.setVisibility(View.VISIBLE);
             }
         });
-        Thread UIThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                definition = umlsThread.getDefinition();
-                listCause = umlsThread.getListCause();
-                listIsa = umlsThread.getListIsa();
-                if(isVisible()) {
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ArrayAdapter<String> adapterCause = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listCause);
-                            lvCauses.setAdapter(adapterCause);
-                            adapterCause.notifyDataSetChanged();
-                            ArrayAdapter<String> adapterIsa = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listIsa);
-                            lvIsa.setAdapter(adapterIsa);
-                            adapterIsa.notifyDataSetChanged();
-                            tvNoInfo.setVisibility(View.INVISIBLE);
-                            tvIsa.setVisibility(View.VISIBLE);
-                            tvCause.setVisibility(View.VISIBLE);
-                            tvDefinitionTitle.setVisibility(View.VISIBLE);
-                            tvDefinition.setText(definition);
-                        }
-                    });
-                }
-            }
-        });
-        String search = (String) ((DrugActivity) requireActivity()).getIntent().getSerializableExtra("Search");
-        this.umlsThread = new UMLSThread(0, getContext(), UIThread, search, null);
-        this.umlsThread.start();
+
+        // Create the UI thread and start UMLS Thread
+        createUIThread();
+
         // Return the view
         return view;
     }
@@ -118,5 +96,44 @@ public class DrugUMLSFragment extends Fragment {
     private void initialiseVariables(){
         this.listIsa = new ArrayList<>();
         this.listCause = new ArrayList<>();
+    }
+
+    /**
+     * Method that creates the UI Thread and starts the UMLS Thread
+     */
+    private void createUIThread(){
+        Thread UIThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                definition = umlsThread.getDefinition();
+                listCause = umlsThread.getListCause();
+                listIsa = umlsThread.getListIsa();
+                if(isVisible()) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ArrayAdapter<String> adapterCause = new ArrayAdapter<>(getContext(),
+                                    android.R.layout.simple_list_item_1, listCause);
+                            lvCauses.setAdapter(adapterCause);
+                            adapterCause.notifyDataSetChanged();
+                            ArrayAdapter<String> adapterIsa = new ArrayAdapter<>(getContext(),
+                                    android.R.layout.simple_list_item_1, listIsa);
+                            lvIsa.setAdapter(adapterIsa);
+                            adapterIsa.notifyDataSetChanged();
+                            tvNoInfo.setVisibility(View.INVISIBLE);
+                            tvIsa.setVisibility(View.VISIBLE);
+                            tvCause.setVisibility(View.VISIBLE);
+                            tvDefinitionTitle.setVisibility(View.VISIBLE);
+                            tvDefinition.setText(definition);
+                        }
+                    });
+                }
+            }
+        });
+        String search = (String) ((DrugActivity) requireActivity()).getIntent()
+                .getSerializableExtra("Search");
+        this.umlsThread = new UMLSThread(0, getContext(), UIThread, search,
+                null);
+        this.umlsThread.start();
     }
 }

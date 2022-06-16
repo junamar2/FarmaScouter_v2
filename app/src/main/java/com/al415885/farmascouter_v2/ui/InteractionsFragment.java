@@ -1,6 +1,7 @@
 package com.al415885.farmascouter_v2.ui;
 
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +32,7 @@ public class InteractionsFragment extends Fragment {
     private EditText etSearch;
     private ListView lvInteractions;
     private ProgressBar pbInteractions;
-    private TextView tvPBInteractions, tvNoInteractions;
+    private TextView tvPBInteractions, tvNoInteractions, tvShowing;
 
     //Threads
     private Thread UIThread;
@@ -41,6 +42,7 @@ public class InteractionsFragment extends Fragment {
     // Class-specific variables
     private String search;
     private ArrayAdapter<String> adapter;
+    private List<String> listIds;
 
     /* Constructor for creating again the view */
     public InteractionsFragment(){}
@@ -75,31 +77,7 @@ public class InteractionsFragment extends Fragment {
                 UIThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<String> list = bio2RdfThread.getInteractions();
-                        if(isVisible()) {
-                            if(list.isEmpty()){
-                                requireActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        pbInteractions.setVisibility(View.INVISIBLE);
-                                        tvPBInteractions.setVisibility(View.INVISIBLE);
-                                        tvNoInteractions.setVisibility(View.VISIBLE);
-                                    }
-                                });
-                            }
-                            else {
-                                requireActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        pbInteractions.setVisibility(View.INVISIBLE);
-                                        tvPBInteractions.setVisibility(View.INVISIBLE);
-                                        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list);
-                                        lvInteractions.setAdapter(adapter);
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                });
-                            }
-                        }
+                        UIThreadAction();
                     }
                 });
                 bio2RdfThread = new Bio2RdfThread(getContext(), UIThread);
@@ -115,7 +93,18 @@ public class InteractionsFragment extends Fragment {
         this.lvInteractions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String a = "";
+                String drugbankui = listIds.get(position);
+                UIThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UIThreadAction();
+                    }
+                });
+                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread);
+                bio2RdfThread.setDRUGBANKui(drugbankui);
+                bio2RdfThread.start();
+                pbInteractions.setVisibility(View.VISIBLE);
+                tvPBInteractions.setVisibility(View.VISIBLE);
             }
         });
 
@@ -140,6 +129,7 @@ public class InteractionsFragment extends Fragment {
         this.pbInteractions = view.findViewById(R.id.pbInteractions);
         this.tvPBInteractions = view.findViewById(R.id.tvPBInteractions);
         this.tvNoInteractions = view.findViewById(R.id.tvNoInteractions);
+        this.tvShowing = view.findViewById(R.id.tvShowing);
     }
 
     private void setNavigationDrawerCheckedItem() {
@@ -149,6 +139,36 @@ public class InteractionsFragment extends Fragment {
                 item.setChecked(true);
             }
             else item.setChecked(false);
+        }
+    }
+
+    private void UIThreadAction(){
+        List<String> listInteractions = bio2RdfThread.getInteractions();
+        listIds = bio2RdfThread.getIds();
+        if(isVisible()) {
+            if(listInteractions.isEmpty()){
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pbInteractions.setVisibility(View.INVISIBLE);
+                        tvPBInteractions.setVisibility(View.INVISIBLE);
+                        tvNoInteractions.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+            else {
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pbInteractions.setVisibility(View.INVISIBLE);
+                        tvPBInteractions.setVisibility(View.INVISIBLE);
+                        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listInteractions);
+                        lvInteractions.setAdapter(adapter);
+                        tvShowing.setText(getResources().getString(R.string.showing) + " " + bio2RdfThread.getTitle());
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
         }
     }
 }

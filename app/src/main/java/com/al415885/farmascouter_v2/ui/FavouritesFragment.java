@@ -50,11 +50,15 @@ public class FavouritesFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         /* Creates the view */
         View view = inflater.inflate(R.layout.fragment_favourites, container, false);
+
         // Find UI elements
-        this.rvFavouritesFragment = view.findViewById(R.id.rvFavouritesFragment);
-        // Initialise variables
+        findUIElements(view);
+
+        // Set up the Recycler View
         setUpRecyclerView();
+
         setNavigationDrawerCheckedItem();
+
         // Return the view
         return view;
     }
@@ -69,7 +73,8 @@ public class FavouritesFragment extends Fragment {
 
     private void setNavigationDrawerCheckedItem() {
         for (int i = 0; i < 5; i++) {
-            MenuItem item = ((MainActivity) requireActivity()).getNavigationDrawer().getMenu().getItem(i);
+            MenuItem item = ((MainActivity) requireActivity()).getNavigationDrawer().getMenu()
+                    .getItem(i);
             if(item.getItemId() == R.id.navigation_favourites){
                 item.setChecked(true);
             }
@@ -91,7 +96,8 @@ public class FavouritesFragment extends Fragment {
         }, new OnLongItemClickListener() {
             @Override
             public void onLongClick(int position) {
-                androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+                androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.
+                        Builder(getContext());
                 adb.setView(R.layout.favourites_dialog);
                 adb.setTitle(((MainActivity) requireActivity()).getResources()
                         .getString(R.string.titleDialogFavourites));
@@ -154,5 +160,12 @@ public class FavouritesFragment extends Fragment {
                 }
             }
         }).start();
+    }
+
+    /**
+     * Method that find the elements of the UI
+     */
+    private void findUIElements(View view){
+        this.rvFavouritesFragment = view.findViewById(R.id.rvFavouritesFragment);
     }
 }

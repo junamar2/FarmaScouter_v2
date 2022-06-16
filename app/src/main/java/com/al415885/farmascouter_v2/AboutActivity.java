@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+/**
+ * Class for the About Activity
+ */
 public class AboutActivity extends AppCompatActivity {
 
     // UI elements

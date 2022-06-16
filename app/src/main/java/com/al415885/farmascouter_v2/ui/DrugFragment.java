@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +17,9 @@ import com.al415885.farmascouter_v2.R;
 import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.squareup.picasso.Picasso;
 
+/**
+ * Class for the Drug Fragment
+ */
 public class DrugFragment extends Fragment {
 
     // Class-specific variables

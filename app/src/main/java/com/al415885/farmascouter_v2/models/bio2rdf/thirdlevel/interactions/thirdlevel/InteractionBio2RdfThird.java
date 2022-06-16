@@ -1,4 +1,4 @@
-package com.al415885.farmascouter_v2.bio2rdf;
+package com.al415885.farmascouter_v2.models.bio2rdf.thirdlevel.interactions.thirdlevel;
 
 import com.google.gson.annotations.SerializedName;
 

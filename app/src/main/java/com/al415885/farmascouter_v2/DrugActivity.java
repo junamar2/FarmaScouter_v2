@@ -7,6 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.al415885.farmascouter_v2.ui.ViewPagerFragment;
 
+/**
+ * Class for the Drug activity
+ */
 public class DrugActivity extends AppCompatActivity {
 
     // UI elements

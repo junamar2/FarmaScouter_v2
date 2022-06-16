@@ -1,26 +1,19 @@
 package com.al415885.farmascouter_v2;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 
-import androidx.fragment.app.DialogFragment;
-import androidx.preference.PreferenceManager;
-
-import okhttp3.internal.cache.DiskLruCache;
-
+/**
+ * Class for the initial View Dialog
+ */
 public class ViewDialog {
 
     // UI elements

@@ -13,6 +13,7 @@
     <!-- InteractionFragment Strings -->
     <string name="searchingInteractions">Searching for interactions. This may take a wile</string>
     <string name="NoInteractions">No interactions found, try again or try another drug</string>
+    <string name="showing">Showing interactions of </string>
     <!-- General Strings -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -31,8 +32,13 @@
     <!-- Dialogs RecyclerViews -->
     <string name="titleDialogDrugs">Add drug to favourites?</string>
     <string name="titleDialogFavourites">Delete drug from favourites?</string>
-    <string name="dialogDrugsDescription">Click accept to add the selected drug to favourites</string>
-    <string name="dialogFavouritesDescription">Click accept to delete the selected drug from favourites</string>
+    <string name="titleDialogSettings">Clear Favourites List?</string>
+    <string name="dialogDrugsDescription">Click accept to add the selected drug to
+                                            favourites</string>
+    <string name="dialogFavouritesDescription">Click accept to delete the selected drug from
+                                                favourites</string>
+    <string name="dialogSettings">Click Accept if you want to delete all elements from your
+                                    favourites list</string>
     <!-- String Fragment Settings -->
     <string name="yourProfile">Your profile</string>
     <string name="yourProfileNameSummary">Insert your name</string>
@@ -42,6 +48,9 @@
     <string name="about">About</string>
     <string name="aboutTitle">App information</string>
     <string name="aboutSummary">See App information details</string>
+    <string name="database">Database</string>
+    <string name="listTitle">Clear favourites list</string>
+    <string name="listSummary">Delete all elements from favourites list</string>
     <!-- Strings MedPS -->
     <string name="nationalCode">National code:</string>
     <string name="name">Name:</string>
@@ -76,4 +85,10 @@
     <string name="dosage_form">Dosage form:</string>
     <string name="simple_dosage_form">Simple dosage form:</string>
     <string name="vtm">Alias:</string>
+    <!-- String About -->
+    <string name="appCreated">App created by:</string>
+    <string name="contact">Contact</string>
+    <string name="description">This application was created to develop the final masters thesis
+                                with the theme of creating an APP that uses Linked Open Data to
+                                provide information to patients about medicines. </string>
 </resources>

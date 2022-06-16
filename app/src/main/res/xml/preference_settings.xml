@@ -22,6 +22,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/database">
+
+        <Preference
+            android:key="keyDatabase"
+            android:summary="@string/listSummary"
+            android:title="@string/listTitle">
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/about">
 
         <Preference
