@@ -59,7 +59,7 @@ public class DrugActivity extends AppCompatActivity {
         setSupportActionBar(this.tbNavigationDrawer);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Drug");
+        getSupportActionBar().setTitle(getResources().getString(R.string.drug));
     }
 
     /**

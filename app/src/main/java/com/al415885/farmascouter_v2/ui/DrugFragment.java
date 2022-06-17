@@ -17,6 +17,8 @@ import com.al415885.farmascouter_v2.R;
 import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Date;
+
 /**
  * Class for the Drug Fragment
  */
@@ -143,7 +145,8 @@ public class DrugFragment extends Fragment {
                 else
                     textDocs = "N/A";
                 tvDocument.setText(textDocs);
-                tvState.setText(String.valueOf(drug.getEstado().getAut()));
+                tvState.setText(new Date(Long.parseLong(String.valueOf(drug.getEstado().getAut())))
+                        .toString());
                 String textNonReplaceable = "";
                 if(drug.getNoSustituible() != null) {
                     for (int i = 0; i < drug.getNoSustituible().size(); i++)

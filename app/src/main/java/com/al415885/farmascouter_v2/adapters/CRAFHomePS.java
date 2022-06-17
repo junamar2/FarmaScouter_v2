@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.al415885.farmascouter_v2.R;
 import com.al415885.farmascouter_v2.models.cima.secondlevel.MedPSSecond;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -54,8 +55,10 @@ public class CRAFHomePS extends RecyclerView.Adapter<CRAFHomePS.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.tvCn.setText(list.get(position).getCn());
         holder.tvName.setText(list.get(position).getNombre());
-        holder.tvStartDate.setText(String.valueOf(list.get(position).getFini()));
-        holder.tvEndDate.setText(String.valueOf(list.get(position).getFfin()));
+        holder.tvStartDate.setText(new Date(Long.parseLong(String.valueOf(list.get(position)
+                .getFini()))).toString());
+        holder.tvEndDate.setText(new Date(Long.parseLong(String.valueOf(list.get(position)
+                .getFfin()))).toString());
         holder.tvTypeOf.setText(String.valueOf(list.get(position).getTipoProblemaSuministro()));
         holder.tvRemarks.setText(list.get(position).getObserv());
         holder.cbActive.setChecked(list.get(position).isActivo());

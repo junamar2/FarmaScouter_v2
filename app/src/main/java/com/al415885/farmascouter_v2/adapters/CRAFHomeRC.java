@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.al415885.farmascouter_v2.R;
 import com.al415885.farmascouter_v2.models.cima.secondlevel.MedRCSecond;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -54,7 +55,8 @@ public class CRAFHomeRC
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.tvNRegisterRC.setText(list.get(position).getNregistro());
-        holder.tvDate.setText(String.valueOf(list.get(position).getFecha()));
+        holder.tvDate.setText(new Date(Long.parseLong(String.valueOf(list.get(position)
+                .getFecha()))).toString());
         holder.tvChangeType.setText(String.valueOf(list.get(position).getTipoCambio()));
         List<String> changes = list.get(position).getCambio();
         String chText = "";

@@ -12,21 +12,17 @@
         android:text="@string/lastUpdates"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="300dp"/>
+        android:textStyle="bold" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tlHome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/secondary_color"
-        android:backgroundTint="@color/secondary_color" />
+        android:layout_height="wrap_content" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vpHome"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/secondary_color"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

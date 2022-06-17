@@ -118,23 +118,23 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()){
             case R.id.navigation_home:
                 fragmentClass = VPHomeFragment.class;
-                getSupportActionBar().setTitle("Home");
+                getSupportActionBar().setTitle(getResources().getString(R.string.home));
                 break;
             case R.id.navigation_drugs:
                 fragmentClass = DrugsFragment.class;
-                getSupportActionBar().setTitle("Search Drugs");
+                getSupportActionBar().setTitle(getResources().getString(R.string.searchDrugs));
                 break;
             case R.id.navigation_interactions:
                 fragmentClass = InteractionsFragment.class;
-                getSupportActionBar().setTitle("Interactions Checker");
+                getSupportActionBar().setTitle(getResources().getString(R.string.interactionCh));
                 break;
             case R.id.navigation_favourites:
                 fragmentClass = FavouritesFragment.class;
-                getSupportActionBar().setTitle("Favourites Drugs");
+                getSupportActionBar().setTitle(getResources().getString(R.string.favourites));
                 break;
             case R.id.navigation_settings:
                 fragmentClass = SettingsFragment.class;
-                getSupportActionBar().setTitle("Settings");
+                getSupportActionBar().setTitle(getResources().getString(R.string.settings));
                 break;
             default:
                 break;

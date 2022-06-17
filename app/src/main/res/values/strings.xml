@@ -6,6 +6,7 @@
     <!-- DrugsFragment Strings -->
     <string name="searchingDrugs">Searching for drugs. This may take a wile</string>
     <string name="NoResults">No results found, try again</string>
+    <string name="barHint">Search drugs by name</string>
     <!-- DrugFragmentUMLS Strings -->
     <string name="causes">This drug has relation with this causes</string>
     <string name="isa">This drug is known as</string>
@@ -91,4 +92,12 @@
     <string name="description">This application was created to develop the final masters thesis
                                 with the theme of creating an APP that uses Linked Open Data to
                                 provide information to patients about medicines. </string>
+    <!-- Strings Fragment names -->
+    <string name="home">Home</string>
+    <string name="searchDrugs">Search Drugs</string>
+    <string name="interactionCh">Interaction Checker</string>
+    <string name="favourites">Favourites</string>
+    <string name="settings">Settings</string>
+    <!-- Activity Names -->
+    <string name="drug">Drug</string>
 </resources>
