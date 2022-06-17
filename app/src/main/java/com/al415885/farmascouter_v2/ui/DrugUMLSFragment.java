@@ -1,26 +1,35 @@
 package com.al415885.farmascouter_v2.ui;
 
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.al415885.farmascouter_v2.DrugActivity;
+import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
+import com.al415885.farmascouter_v2.db.OrmLiteHelper;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.al415885.farmascouter_v2.threads.UMLSThread;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrugUMLSFragment extends Fragment {
-
+    public static final String PREFS_NAME = "MyPrefsFile1";
     // UI elements
     private TextView tvDefinition, tvIsa, tvDefinitionTitle, tvNoInfo, tvCause;
     private ListView lvCauses, lvIsa;
@@ -54,6 +63,8 @@ public class DrugUMLSFragment extends Fragment {
         // Initialise variables
         initialiseVariables();
 
+        // Show warning dialog if proceeds
+        showDialog();
         // Set the TextView visible
         requireActivity().runOnUiThread(new Runnable() {
             @Override
@@ -135,5 +146,41 @@ public class DrugUMLSFragment extends Fragment {
         this.umlsThread = new UMLSThread(0, getContext(), UIThread, search,
                 null);
         this.umlsThread.start();
+    }
+
+    /**
+     * Method that shows a warning dialog if proceeds
+     */
+    private void showDialog(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String role = prefs.getString("keyRole", "");
+        String [] array = requireActivity().getResources()
+                .getStringArray(R.array.optionsRoleSettings);
+        String cbState = prefs.getString("cbState", "");
+        if((role.equals(array[2]) || role.equals(array[3]))&& !cbState.equals("checked")){
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            View view = inflater.inflate(R.layout.warning_dialog, null);
+            alertDialog.setView(view);
+            alertDialog.setMessage(R.string.warningDesc)
+                    .setTitle(R.string.warning);
+            /* Finds the UI element */
+            CheckBox cbDoNot = view.findViewById(R.id.cbDoNot);
+            alertDialog.setPositiveButton(((DrugActivity) requireActivity()).getResources()
+                    .getString(R.string.accept), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    /* Stores the state of the CheckBox */
+                    String cbResult = "";
+                    /* If the CheckBox was checked, saves it as "checked" */
+                    if (cbDoNot.isChecked()) cbResult = "checked";
+                    /* Edits the preferences of the App */
+                    SharedPreferences.Editor editor = prefs.edit();
+                    /* Stores the setting into the preference of the App using a key */
+                    editor.putString("cbState", cbResult);
+                    editor.commit();
+                }
+            });
+            alertDialog.show();
+        }
     }
 }

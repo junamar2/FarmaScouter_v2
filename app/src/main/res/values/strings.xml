@@ -100,4 +100,11 @@
     <string name="settings">Settings</string>
     <!-- Activity Names -->
     <string name="drug">Drug</string>
+    <!-- Warning dialog -->
+    <string name="warning">Warning</string>
+    <string name="warningDesc">This section provides information that may be overwhelming for people
+                                without pharmaceutical or medical knowledge, so use with caution.
+                                Before making any changes to your medication through the application,
+                                please consult your general practitioner.</string>
+    <string name="cb">Do not show again</string>
 </resources>
