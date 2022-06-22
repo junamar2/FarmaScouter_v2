@@ -1,7 +1,7 @@
 package com.al415885.farmascouter_v2.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,19 +10,27 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.al415885.farmascouter_v2.DrugActivity;
 import com.al415885.farmascouter_v2.MainActivity;
 import com.al415885.farmascouter_v2.R;
+import com.al415885.farmascouter_v2.adapters.CRAFHomePS;
+import com.al415885.farmascouter_v2.adapters.CRAFInteractions;
+import com.al415885.farmascouter_v2.adapters.OnItemClickListener;
+import com.al415885.farmascouter_v2.adapters.OnLongItemClickListener;
+import com.al415885.farmascouter_v2.models.cima.secondlevel.MedSecond;
 import com.al415885.farmascouter_v2.threads.Bio2RdfThread;
 import com.al415885.farmascouter_v2.threads.UMLSThread;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InteractionsFragment extends Fragment {
@@ -30,9 +38,11 @@ public class InteractionsFragment extends Fragment {
     // UI elements
     private ImageButton imbSearch;
     private EditText etSearch;
-    private ListView lvInteractions;
+    private RecyclerView rvInteractions;
+    private List<String> rvListDrugs;
+    private List<String> rvListDesc;
     private ProgressBar pbInteractions;
-    private TextView tvPBInteractions, tvNoInteractions, tvShowing;
+    private TextView tvPBInteractions, tvNoInteractions, tvShowing, tvDrugDesc, tvDescTitle;
 
     //Threads
     private Thread UIThread;
@@ -41,7 +51,7 @@ public class InteractionsFragment extends Fragment {
 
     // Class-specific variables
     private String search;
-    private ArrayAdapter<String> adapter;
+    private CRAFInteractions adapter;
     private List<String> listIds;
 
     /* Constructor for creating again the view */
@@ -62,6 +72,12 @@ public class InteractionsFragment extends Fragment {
         // Find UI elements
         findUIElements(view);
 
+        // Initialise variables
+        initialiseVariables();
+
+        // Set Up the Recycler View
+        setUpRecyclerView();
+
         setNavigationDrawerCheckedItem();
         // Listeners
         this.imbSearch.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +87,8 @@ public class InteractionsFragment extends Fragment {
                 if(view != null){
                     ((MainActivity) requireActivity()).hideSoftKeyboard();
                 }
-                if(adapter != null && !adapter.isEmpty())
-                    adapter.clear();
+                /*if(adapter != null && !adapter.isEmpty())
+                    adapter.clear();*/
                 search = etSearch.getText().toString();
                 UIThread = new Thread(new Runnable() {
                     @Override
@@ -87,24 +103,6 @@ public class InteractionsFragment extends Fragment {
                 pbInteractions.setVisibility(View.VISIBLE);
                 tvPBInteractions.setVisibility(View.VISIBLE);
                 pbInteractions.animate();
-            }
-        });
-
-        this.lvInteractions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String drugbankui = listIds.get(position);
-                UIThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        UIThreadAction();
-                    }
-                });
-                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread);
-                bio2RdfThread.setDRUGBANKui(drugbankui);
-                bio2RdfThread.start();
-                pbInteractions.setVisibility(View.VISIBLE);
-                tvPBInteractions.setVisibility(View.VISIBLE);
             }
         });
 
@@ -125,11 +123,22 @@ public class InteractionsFragment extends Fragment {
     private void findUIElements(View view){
         this.imbSearch = view.findViewById(R.id.imbSearch);
         this.etSearch = view.findViewById(R.id.etSearch);
-        this.lvInteractions = view.findViewById(R.id.lvInteractions);
+        this.rvInteractions = view.findViewById(R.id.rvInteractions);
         this.pbInteractions = view.findViewById(R.id.pbInteractions);
         this.tvPBInteractions = view.findViewById(R.id.tvPBInteractions);
         this.tvNoInteractions = view.findViewById(R.id.tvNoInteractions);
         this.tvShowing = view.findViewById(R.id.tvShowing);
+        this.tvDrugDesc = view.findViewById(R.id.tvDrugDesc);
+        this.tvDescTitle = view.findViewById(R.id.tvDescTitle);
+    }
+
+    /**
+     * Method that initialise the class-specific variables
+     */
+    private void initialiseVariables(){
+        this.listIds = new ArrayList<>();
+        this.rvListDrugs = new ArrayList<>();
+        this.rvListDesc = new ArrayList<>();
     }
 
     private void setNavigationDrawerCheckedItem() {
@@ -143,10 +152,11 @@ public class InteractionsFragment extends Fragment {
     }
 
     private void UIThreadAction(){
-        List<String> listInteractions = bio2RdfThread.getInteractions();
-        listIds = bio2RdfThread.getIds();
+        rvListDrugs.addAll(bio2RdfThread.getInteractionsDrug());
+        rvListDesc.addAll(bio2RdfThread.getInteractionsDesc());
+        listIds.addAll(bio2RdfThread.getIds());
         if(isVisible()) {
-            if(listInteractions.isEmpty()){
+            if(rvListDrugs.isEmpty()){
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -162,13 +172,44 @@ public class InteractionsFragment extends Fragment {
                     public void run() {
                         pbInteractions.setVisibility(View.INVISIBLE);
                         tvPBInteractions.setVisibility(View.INVISIBLE);
-                        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listInteractions);
-                        lvInteractions.setAdapter(adapter);
-                        tvShowing.setText(getResources().getString(R.string.showing) + " " + bio2RdfThread.getTitle());
+                        tvShowing.setText(getResources().getString(R.string.showing) + " "
+                                + bio2RdfThread.getTitle());
+                        tvDescTitle.setText(getResources().getString(R.string.descriptionDrug) + " "
+                                + bio2RdfThread.getTitle());
+                        tvDrugDesc.setText(bio2RdfThread.getDescription());
                         adapter.notifyDataSetChanged();
                     }
                 });
             }
         }
+    }
+
+    private void setUpRecyclerView(){
+        this.adapter = new CRAFInteractions(new OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                String drugbankui = listIds.get(position);
+                UIThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UIThreadAction();
+                    }
+                });
+                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread);
+                bio2RdfThread.setDRUGBANKui(drugbankui);
+                bio2RdfThread.start();
+                pbInteractions.setVisibility(View.VISIBLE);
+                tvPBInteractions.setVisibility(View.VISIBLE);
+                if(rvListDesc != null && !rvListDesc.isEmpty()) {
+                    rvListDrugs.clear();
+                    rvListDesc.clear();
+                    listIds.clear();
+                }
+            }
+        }, this.rvListDrugs, this.rvListDesc);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(),
+                RecyclerView.VERTICAL, false);
+        this.rvInteractions.setAdapter(this.adapter);
+        this.rvInteractions.setLayoutManager(manager);
     }
 }

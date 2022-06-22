@@ -15,6 +15,7 @@
     <string name="searchingInteractions">Searching for interactions. This may take a wile</string>
     <string name="NoInteractions">No interactions found, try again or try another drug</string>
     <string name="showing">Showing interactions of </string>
+    <string name="descriptionDrug">Drug description of</string>
     <!-- General Strings -->
     <string name="yes">Yes</string>
     <string name="no">No</string>

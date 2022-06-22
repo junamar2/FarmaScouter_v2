@@ -23,6 +23,7 @@ import com.hp.hpl.jena.query.Syntax;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Bio2RdfThread extends Thread implements Runnable{
 
@@ -38,8 +39,8 @@ public class Bio2RdfThread extends Thread implements Runnable{
     // Information about the drug
     private String drugbankui;
     private List<String> ids;
-    private String title;
-    private List<String> interactions;
+    private String title, description;
+    private List<String> interactionsDrug, interactionsDesc;
 
 
     // Class constructor
@@ -48,7 +49,8 @@ public class Bio2RdfThread extends Thread implements Runnable{
         this.context = context;
         this.UIThread = UIThread;
         this.requestQueue = Volley.newRequestQueue(this.context);
-        this.interactions = new ArrayList<>();
+        this.interactionsDrug = new ArrayList<>();
+        this.interactionsDesc = new ArrayList<>();
         this.ids = new ArrayList<>();
     }
 
@@ -75,8 +77,10 @@ public class Bio2RdfThread extends Thread implements Runnable{
                         int i = 0;
                         while(i < bio2RdfSecondList.size() && bio2RdfThirdInteractionsList == null){
                             Bio2RdfSecond bio2RdfSecond = bio2RdfSecondList.get(i);
-                            if(bio2RdfSecond.getTitle() != null)
+                            if(bio2RdfSecond.getTitle() != null) {
                                 title = bio2RdfSecond.getTitle().getTitle();
+                                description = bio2RdfSecond.getDescription().getDescription();
+                            }
                             bio2RdfThirdInteractionsList = bio2RdfSecond.getListInteractions();
                             i++;
                         }
@@ -109,8 +113,21 @@ public class Bio2RdfThread extends Thread implements Runnable{
                         List<InteractionBio2RdfSecond> interactionBio2RdfSecond = interactionBio2RdfFirst.getSecond();
                         InteractionBio2RdfSecond interactionBio2RdfSecond1 = interactionBio2RdfSecond.get(2);
                         InteractionBio2RdfThird interactionBio2RdfThird = interactionBio2RdfSecond1.getThird();
+                        String description = "";
                         if(interactionBio2RdfThird != null) {
-                            interactions.add(interactionBio2RdfThird.getValue());
+                            String [] splits = interactionBio2RdfThird.getValue().split(" ");
+                            if(splits[2].toLowerCase(Locale.ROOT).equals(title.toLowerCase(Locale.ROOT)))
+                                interactionsDrug.add(splits[4]);
+                            else
+                                interactionsDrug.add(splits[2]);
+                            for(int i = 0; i < splits.length; i++){
+                                if(splits[i].equals("-"))
+                                    for(int j = i+1; j < splits.length; j++) {
+                                        description = description + " " + splits[j];
+                                    }
+                            }
+                            interactionsDesc.add(description);
+                            description = "";
                             String drugbankui1 = interactionBio2RdfSecond1.getId().substring(37, 44);
                             String drugbankui2 = interactionBio2RdfSecond1.getId().substring(45);
                             if(drugbankui.equals(drugbankui1))
@@ -134,8 +151,12 @@ public class Bio2RdfThread extends Thread implements Runnable{
         this.drugbankui = drugbankui;
     }
 
-    public List<String> getInteractions() {
-        return this.interactions;
+    public List<String> getInteractionsDrug() {
+        return this.interactionsDrug;
+    }
+
+    public List<String> getInteractionsDesc() {
+        return this.interactionsDesc;
     }
 
     public List<String> getIds() {
@@ -144,5 +165,9 @@ public class Bio2RdfThread extends Thread implements Runnable{
 
     public String getTitle() {
         return this.title;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 }
