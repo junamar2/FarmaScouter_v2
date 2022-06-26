@@ -4,27 +4,27 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home"
-        android:title="Home"
+        android:title="@string/home"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navigation_drugs"
         android:icon="@drawable/ic_drugs"
-        android:title="Search Drugs"
+        android:title="@string/searchDrugs"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navigation_interactions"
         android:icon="@drawable/ic_interactions"
-        android:title="Interactions Checker"
+        android:title="@string/interactionCh"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navigation_favourites"
         android:icon="@drawable/ic_favourite"
-        android:title="Favourites"
+        android:title="@string/favourites"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"
+        android:title="@string/settings"
         app:showAsAction="ifRoom" />
 
 </menu>

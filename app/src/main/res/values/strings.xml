@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FarmaScouter_v2</string>
+    <string name="app_name" translatable="false">FarmaScouter</string>
 
     <!-- HomeFragment Strings -->
     <string name="lastUpdates">Latest updates on medicines</string>
@@ -14,8 +14,8 @@
     <!-- InteractionFragment Strings -->
     <string name="searchingInteractions">Searching for interactions. This may take a wile</string>
     <string name="NoInteractions">No interactions found, try again or try another drug</string>
-    <string name="showing">Showing interactions of </string>
-    <string name="descriptionDrug">Drug description of</string>
+    <string name="showing" translatable="false">Showing interactions of </string>
+    <string name="descriptionDrug" translatable="false">Drug description of</string>
     <!-- General Strings -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -89,7 +89,7 @@
     <string name="vtm">Alias:</string>
     <!-- String About -->
     <string name="appCreated">App created by:</string>
-    <string name="contact">Contact</string>
+    <string name="contact">Contact:</string>
     <string name="description">This application was created to develop the final masters thesis
                                 with the theme of creating an APP that uses Linked Open Data to
                                 provide information to patients about medicines. </string>
@@ -108,4 +108,9 @@
                                 Before making any changes to your medication through the application,
                                 please consult your general practitioner.</string>
     <string name="cb">Do not show again</string>
+    <!-- View Pager tabs -->
+    <string name="supplyProb">SUPPLY PROBLEMS</string>
+    <string name="changelog">CHANGELOG</string>
+    <string name="generalInfo">GENERAL INFORMATION</string>
+    <string name="moreInfo">MORE INFO</string>
 </resources>

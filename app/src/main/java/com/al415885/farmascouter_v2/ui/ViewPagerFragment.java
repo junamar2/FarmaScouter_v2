@@ -39,12 +39,12 @@ public class ViewPagerFragment extends Fragment {
         // add your fragments
         Activity activity = requireActivity();
         if(activity.getClass().equals(MainActivity.class)){
-            adapter.addFrag(new HomeFragmentPS(), "Supply Problems");
-            adapter.addFrag(new HomeFragmentRC(), "Changelog");
+            adapter.addFrag(new HomeFragmentPS(), getResources().getString(R.string.supplyProb));
+            adapter.addFrag(new HomeFragmentRC(), getResources().getString(R.string.changelog));
         }
         else if(activity.getClass().equals(DrugActivity.class)) {
-            adapter.addFrag(new DrugFragment(), "General Information");
-            adapter.addFrag(new DrugUMLSFragment(), "More Info");
+            adapter.addFrag(new DrugFragment(), getResources().getString(R.string.generalInfo));
+            adapter.addFrag(new DrugUMLSFragment(), getResources().getString(R.string.moreInfo));
         }
 
         // set adapter on viewpager

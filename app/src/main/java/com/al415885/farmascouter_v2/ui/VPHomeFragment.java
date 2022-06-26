@@ -38,8 +38,8 @@ public class VPHomeFragment extends Fragment {
 
         VPA adapter = new VPA(getChildFragmentManager());
 
-        adapter.addFrag(new HomeFragmentPS(), "Supply Problems");
-        adapter.addFrag(new HomeFragmentRC(), "Changelog");
+        adapter.addFrag(new HomeFragmentPS(), getResources().getString(R.string.supplyProb));
+        adapter.addFrag(new HomeFragmentRC(), getResources().getString(R.string.changelog));
 
         // set adapter on viewpager
         viewPager.setAdapter(adapter);
