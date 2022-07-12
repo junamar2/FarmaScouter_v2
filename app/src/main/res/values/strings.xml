@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">FarmaScouter</string>
+    <string name="app_name" translatable="false">PharmaScouter</string>
 
     <!-- HomeFragment Strings -->
     <string name="lastUpdates">Latest updates on medicines</string>
@@ -7,6 +7,7 @@
     <string name="searchingDrugs">Searching for drugs. This may take a wile</string>
     <string name="NoResults">No results found, try again</string>
     <string name="barHint">Search drugs by name</string>
+    <string name="noInfo">No information found</string>
     <!-- DrugFragmentUMLS Strings -->
     <string name="causes">This drug has relation with this causes</string>
     <string name="isa">This drug is known as</string>

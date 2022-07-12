@@ -86,4 +86,5 @@
     <string name="changelog">CHANGELOG</string>
     <string name="generalInfo">INFORMAÇÕES GERAIS</string>
     <string name="moreInfo">MAIS INFORMAÇÕES</string>
+    <string name="noInfo">Não foi encontrada informação</string>
 </resources>

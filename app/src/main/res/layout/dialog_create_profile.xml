@@ -61,38 +61,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/frmCancel"
-        android:layout_marginEnd="45dp"
-        android:layout_marginTop="115dp">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@android:color/transparent"
-            app:backgroundTint="@color/red" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:elevation="6dp"
-            android:text="@string/cancel"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:id="@+id/frmAccept"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="115dp">
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="105dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@android:color/transparent"
             app:backgroundTint="@color/green" />
 

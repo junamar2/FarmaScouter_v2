@@ -86,4 +86,5 @@
     <string name="changelog">REGISTRE CANVIS</string>
     <string name="generalInfo">INFORMACIÓ GENERAL</string>
     <string name="moreInfo">MÉS INFORMACIÓ</string>
+    <string name="noInfo">No s\'ha trobat informació</string>
 </resources>

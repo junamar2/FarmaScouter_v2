@@ -211,6 +211,7 @@ public class DrugsFragment extends Fragment {
                 cimaThread.start();
                 pbDrugs.setVisibility(View.VISIBLE);
                 tvPBDrugs.setVisibility(View.VISIBLE);
+                tvNoResults.setVisibility(View.INVISIBLE);
                 pbDrugs.animate();
             }
         });

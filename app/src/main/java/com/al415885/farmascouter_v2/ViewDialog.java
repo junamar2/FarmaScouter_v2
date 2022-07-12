@@ -19,7 +19,7 @@ public class ViewDialog {
     // UI elements
     private EditText etName;
     private Spinner spinnerRole;
-    private FrameLayout frmAccept, frmCancel;
+    private FrameLayout frmAccept;
 
     // Class-specific variables
     private Activity activity;
@@ -79,7 +79,6 @@ public class ViewDialog {
         this.etName = this.dialog.findViewById(R.id.etName);
         this.spinnerRole = this.dialog.findViewById(R.id.spinnerRole);
         this.frmAccept = this.dialog.findViewById(R.id.frmAccept);
-        this.frmCancel = this.dialog.findViewById(R.id.frmCancel);
     }
 
     /**
@@ -94,13 +93,6 @@ public class ViewDialog {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
-        });
-
-        this.frmCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
         });
 
         this.frmAccept.setOnClickListener(new View.OnClickListener() {
