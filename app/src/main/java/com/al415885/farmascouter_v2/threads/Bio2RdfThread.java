@@ -2,6 +2,10 @@ package com.al415885.farmascouter_v2.threads;
 
 import android.content.Context;
 
+import com.al415885.farmascouter_v2.models.bio2rdf.previousLevel.Bio2RdfPrevFirst;
+import com.al415885.farmascouter_v2.models.bio2rdf.previousLevel.Bio2RdfPrevSecond;
+import com.al415885.farmascouter_v2.models.bio2rdf.previousLevel.Bio2RdfPrevThird;
+import com.al415885.farmascouter_v2.models.bio2rdf.previousLevel.Bio2RdfResource;
 import com.al415885.farmascouter_v2.models.bio2rdf.firstlevel.Bio2RdfFirst;
 import com.al415885.farmascouter_v2.models.bio2rdf.secondlevel.Bio2RdfSecond;
 import com.al415885.farmascouter_v2.models.bio2rdf.thirdlevel.Bio2RdfThirdInteractions;
@@ -32,7 +36,8 @@ public class Bio2RdfThread extends Thread implements Runnable{
     private Context context;
     private Thread UIThread;
     private static final String sparqlEndpointUri = "https://bio2rdf.org/sparql",
-                                sparqlEndpointAnswerFormat = "&output=application%2Fld%2Bjson";
+                                sparqlEndpointAnswerFormat = "&output=application%2Fld%2Bjson",
+                        sparqlEndpointAnswerFormat2 = "&format=application%2Fsparql-results%2Bjson";
 
     private RequestQueue requestQueue;
 
@@ -57,15 +62,49 @@ public class Bio2RdfThread extends Thread implements Runnable{
     private String BASEURL =
             "https://rxnav.nlm.nih.gov/REST/interaction/interaction.json?rxcui=";
     public void run() {
-        String queryString = "DESCRIBE <http://bio2rdf.org/drugbank:" + this.drugbankui + ">";
+        //String queryString = "DESCRIBE <http://bio2rdf.org/drugbank:" + this.drugbankui + ">";
+        String queryString = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" +
+                "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+                "PREFIX bio2rdf_vocabulary: <http://bio2rdf.org/bio2rdf_vocabulary:>\n" +
+                "\n" +
+                "SELECT ?resource WHERE { ?resource bio2rdf_vocabulary:identifier \"" +
+                this.drugbankui + "\"^^xsd:string .}";
         Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
         QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
-        this.url = qe.toString().substring(4) + sparqlEndpointAnswerFormat;
-        DRUGBANKRequest(this.url, Bio2RdfFirst.class);
+        this.url = qe.toString().substring(4) + sparqlEndpointAnswerFormat2;
+        resourceRequest(this.url, Bio2RdfPrevFirst.class);
+        //DRUGBANKRequest(this.url, Bio2RdfFirst.class);
+    }
+
+    public void resourceRequest(String url, Class<?> cl){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        Object gsonResp = gson.fromJson(response, Bio2RdfPrevFirst.class);
+                        Bio2RdfPrevFirst bio2RdfPrevFirst = (Bio2RdfPrevFirst) gsonResp;
+                        Bio2RdfPrevSecond bio2RdfPrevSecond = bio2RdfPrevFirst.getResults();
+                        List<Bio2RdfPrevThird> bio2RdfPrevThirdList = bio2RdfPrevSecond.getBindings();
+                        Bio2RdfResource bio2RdfResource = bio2RdfPrevThirdList.get(0).getResource();
+                        String a = "";
+                        String queryString = "DESCRIBE <" + bio2RdfResource.getValue() + ">";
+                        Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+                        QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
+                        String url2 = qe.toString().substring(4) + sparqlEndpointAnswerFormat;
+                        DRUGBANKRequest(url2, Bio2RdfFirst.class);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(stringRequest);
     }
 
     public void DRUGBANKRequest(String url, Class<?> cl){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
