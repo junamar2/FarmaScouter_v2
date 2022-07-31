@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -43,6 +44,7 @@ public class InteractionsFragment extends Fragment {
     private List<String> rvListDesc;
     private ProgressBar pbInteractions;
     private TextView tvPBInteractions, tvNoInteractions, tvShowing, tvDrugDesc, tvDescTitle;
+    private CheckBox cbAutomatic, cbCustom;
 
     //Threads
     private Thread UIThread;
@@ -53,6 +55,8 @@ public class InteractionsFragment extends Fragment {
     private String search;
     private CRAFInteractions adapter;
     private List<String> listIds;
+    private int threadType = 0;
+    private int count;
 
     /* Constructor for creating again the view */
     public InteractionsFragment(){}
@@ -80,31 +84,7 @@ public class InteractionsFragment extends Fragment {
 
         setNavigationDrawerCheckedItem();
         // Listeners
-        this.imbSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Hide the keyboard
-                if(view != null){
-                    ((MainActivity) requireActivity()).hideSoftKeyboard();
-                }
-                /*if(adapter != null && !adapter.isEmpty())
-                    adapter.clear();*/
-                search = etSearch.getText().toString();
-                UIThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        UIThreadAction();
-                    }
-                });
-                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread);
-                umlsThread = new UMLSThread(1, getContext(), null, search, bio2RdfThread);
-                umlsThread.start();
-                tvNoInteractions.setVisibility(View.INVISIBLE);
-                pbInteractions.setVisibility(View.VISIBLE);
-                tvPBInteractions.setVisibility(View.VISIBLE);
-                pbInteractions.animate();
-            }
-        });
+        setUpListeners(view);
 
         return view;
     }
@@ -130,17 +110,32 @@ public class InteractionsFragment extends Fragment {
         this.tvShowing = view.findViewById(R.id.tvShowing);
         this.tvDrugDesc = view.findViewById(R.id.tvDrugDesc);
         this.tvDescTitle = view.findViewById(R.id.tvDescTitle);
+        this.cbAutomatic = view.findViewById(R.id.cbAutomatic);
+        this.cbCustom = view.findViewById(R.id.cbCustom);
     }
 
     /**
      * Method that initialise the class-specific variables
      */
     private void initialiseVariables(){
+        this.etSearch.setHint("Search drugs by name");
         this.listIds = new ArrayList<>();
         this.rvListDrugs = new ArrayList<>();
         this.rvListDesc = new ArrayList<>();
+        if(this.cbAutomatic.isChecked()) {
+            this.cbCustom.setChecked(false);
+            this.threadType = 0;
+        }
+        else {
+            this.cbAutomatic.setChecked(false);
+            this.threadType = 1;
+        }
+        this.count = -1;
     }
 
+    /**
+     * Method that checks the navigation drawer item
+     */
     private void setNavigationDrawerCheckedItem() {
         for (int i = 0; i < 5; i++) {
             MenuItem item = ((MainActivity) requireActivity()).getNavigationDrawer().getMenu().getItem(i);
@@ -151,12 +146,46 @@ public class InteractionsFragment extends Fragment {
         }
     }
 
+    /**
+     * Method that specifies the action done by the thread
+     */
     private void UIThreadAction(){
-        rvListDrugs.addAll(bio2RdfThread.getInteractionsDrug());
-        rvListDesc.addAll(bio2RdfThread.getInteractionsDesc());
-        listIds.addAll(bio2RdfThread.getIds());
-        if(isVisible()) {
-            if(rvListDrugs.isEmpty()){
+        if(this.threadType == 0) {
+            rvListDrugs.addAll(bio2RdfThread.getInteractionsDrug());
+            rvListDesc.addAll(bio2RdfThread.getInteractionsDesc());
+            listIds.addAll(bio2RdfThread.getIds());
+            if (isVisible()) {
+                if (rvListDrugs.isEmpty()) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pbInteractions.setVisibility(View.INVISIBLE);
+                            tvPBInteractions.setVisibility(View.INVISIBLE);
+                            tvNoInteractions.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pbInteractions.setVisibility(View.INVISIBLE);
+                            tvPBInteractions.setVisibility(View.INVISIBLE);
+                            tvShowing.setVisibility(View.VISIBLE);
+                            tvDescTitle.setVisibility(View.VISIBLE);
+                            tvDrugDesc.setVisibility(View.VISIBLE);
+                            tvShowing.setText(getResources().getString(R.string.showing) + " "
+                                    + bio2RdfThread.getTitle());
+                            tvDescTitle.setText(getResources().getString(R.string.descriptionDrug) + " "
+                                    + bio2RdfThread.getTitle());
+                            tvDrugDesc.setText(bio2RdfThread.getDescription());
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        }
+        else{
+            if(!bio2RdfThread.isCustomRes()){
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -166,24 +195,41 @@ public class InteractionsFragment extends Fragment {
                     }
                 });
             }
-            else {
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        pbInteractions.setVisibility(View.INVISIBLE);
-                        tvPBInteractions.setVisibility(View.INVISIBLE);
-                        tvShowing.setText(getResources().getString(R.string.showing) + " "
-                                + bio2RdfThread.getTitle());
-                        tvDescTitle.setText(getResources().getString(R.string.descriptionDrug) + " "
-                                + bio2RdfThread.getTitle());
-                        tvDrugDesc.setText(bio2RdfThread.getDescription());
-                        adapter.notifyDataSetChanged();
+            else{
+                rvListDrugs.addAll(bio2RdfThread.getInteractionsDrug());
+                rvListDesc.addAll(bio2RdfThread.getInteractionsDesc());
+                listIds.addAll(bio2RdfThread.getIds());
+                if (isVisible()) {
+                    if (rvListDrugs.isEmpty()) {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pbInteractions.setVisibility(View.INVISIBLE);
+                                tvPBInteractions.setVisibility(View.INVISIBLE);
+                                tvNoInteractions.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    } else {
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pbInteractions.setVisibility(View.INVISIBLE);
+                                tvPBInteractions.setVisibility(View.INVISIBLE);
+                                tvShowing.setVisibility(View.VISIBLE);
+                                tvShowing.setText("Showing interactions");
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
                     }
-                });
+                }
             }
+
         }
     }
 
+    /**
+     * Method that sets uo the Recycler View
+     */
     private void setUpRecyclerView(){
         this.adapter = new CRAFInteractions(new OnItemClickListener() {
             @Override
@@ -195,7 +241,11 @@ public class InteractionsFragment extends Fragment {
                         UIThreadAction();
                     }
                 });
-                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread);
+                etSearch.setText("");
+                cbAutomatic.setChecked(true);
+                cbCustom.setChecked(false);
+                threadType = 0;
+                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread, threadType);
                 bio2RdfThread.setDRUGBANKui(drugbankui);
                 bio2RdfThread.start();
                 pbInteractions.setVisibility(View.VISIBLE);
@@ -211,5 +261,76 @@ public class InteractionsFragment extends Fragment {
                 RecyclerView.VERTICAL, false);
         this.rvInteractions.setAdapter(this.adapter);
         this.rvInteractions.setLayoutManager(manager);
+    }
+
+    /**
+     * Method that sets up the needed listeners
+     * @param view: the View
+     */
+    private void setUpListeners(View view){
+        this.imbSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hide the keyboard
+                if(view != null){
+                    ((MainActivity) requireActivity()).hideSoftKeyboard();
+                }
+                if(rvListDesc != null && !rvListDesc.isEmpty()) {
+                    rvListDrugs.clear();
+                    rvListDesc.clear();
+                    listIds.clear();
+                    adapter.notifyDataSetChanged();
+                }
+                tvShowing.setVisibility(View.INVISIBLE);
+                tvDescTitle.setVisibility(View.INVISIBLE);
+                tvDrugDesc.setVisibility(View.INVISIBLE);
+                String [] splits;
+                if(cbAutomatic.isChecked()) {
+                    cbCustom.setChecked(false);
+                    threadType = 0;
+                    search = etSearch.getText().toString();
+                }
+                else {
+                    cbAutomatic.setChecked(false);
+                    threadType = 1;
+                    splits = etSearch.getText().toString().split(",");
+                    search = splits[0];
+                }
+                UIThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UIThreadAction();
+                    }
+                });
+                bio2RdfThread = new Bio2RdfThread(getContext(), UIThread, threadType);
+                if(threadType == 1) {
+                    count++;
+                    bio2RdfThread.addCount(count);
+                }
+                umlsThread = new UMLSThread(1, getContext(), null, search, bio2RdfThread);
+                umlsThread.start();
+                tvNoInteractions.setVisibility(View.INVISIBLE);
+                pbInteractions.setVisibility(View.VISIBLE);
+                tvPBInteractions.setVisibility(View.VISIBLE);
+                pbInteractions.animate();
+                etSearch.setText("");
+            }
+        });
+
+        this.cbAutomatic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etSearch.setHint("Search drugs by name");
+                cbCustom.setChecked(false);
+            }
+        });
+
+        this.cbCustom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etSearch.setHint("Name two drugs coma separated");
+                cbAutomatic.setChecked(false);
+            }
+        });
     }
 }

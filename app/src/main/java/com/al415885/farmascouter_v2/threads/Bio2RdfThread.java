@@ -2,6 +2,7 @@ package com.al415885.farmascouter_v2.threads;
 
 import android.content.Context;
 
+import com.al415885.farmascouter_v2.models.bio2rdf.custom.CustomSearch;
 import com.al415885.farmascouter_v2.models.bio2rdf.previousLevel.Bio2RdfPrevFirst;
 import com.al415885.farmascouter_v2.models.bio2rdf.previousLevel.Bio2RdfPrevSecond;
 import com.al415885.farmascouter_v2.models.bio2rdf.previousLevel.Bio2RdfPrevThird;
@@ -46,10 +47,20 @@ public class Bio2RdfThread extends Thread implements Runnable{
     private List<String> ids;
     private String title, description;
     private List<String> interactionsDrug, interactionsDesc;
+    private boolean customRes;
 
+    // Types of thread
+    private static final int AUTOMATIC_SEARCH = 0;
+    private static final int CUSTOM_SEARCH = 1;
+
+    // Custom search examples
+    // paracetamol, trastuzumab, methotrexate
+    private String [] examples = {"DB00316", "DB00072", "DB00563"};
+    private String [] names = {"acetaminophen", "methotrexate", "trastuzumab"};
+    private int count = -1;
 
     // Class constructor
-    public Bio2RdfThread(Context context, Thread UIThread){
+    public Bio2RdfThread(Context context, Thread UIThread, int threadType){
         this.threadType = threadType;
         this.context = context;
         this.UIThread = UIThread;
@@ -62,22 +73,37 @@ public class Bio2RdfThread extends Thread implements Runnable{
     private String BASEURL =
             "https://rxnav.nlm.nih.gov/REST/interaction/interaction.json?rxcui=";
     public void run() {
-        //String queryString = "DESCRIBE <http://bio2rdf.org/drugbank:" + this.drugbankui + ">";
-        String queryString = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" +
-                "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-                "PREFIX bio2rdf_vocabulary: <http://bio2rdf.org/bio2rdf_vocabulary:>\n" +
-                "\n" +
-                "SELECT ?resource WHERE { ?resource bio2rdf_vocabulary:identifier \"" +
-                this.drugbankui + "\"^^xsd:string .}";
-        Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-        QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
-        this.url = qe.toString().substring(4) + sparqlEndpointAnswerFormat2;
-        resourceRequest(this.url, Bio2RdfPrevFirst.class);
-        //DRUGBANKRequest(this.url, Bio2RdfFirst.class);
+        if(threadType == AUTOMATIC_SEARCH) {
+            //String queryString = "DESCRIBE <http://bio2rdf.org/drugbank:" + this.drugbankui + ">";
+            String queryString = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" +
+                    "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+                    "PREFIX bio2rdf_vocabulary: <http://bio2rdf.org/bio2rdf_vocabulary:>\n" +
+                    "\n" +
+                    "SELECT ?resource WHERE { ?resource bio2rdf_vocabulary:identifier \"" +
+                    this.drugbankui + "\"^^xsd:string .}";
+            Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+            QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
+            this.url = qe.toString().substring(4) + sparqlEndpointAnswerFormat2;
+            resourceRequest(this.url, Bio2RdfPrevFirst.class);
+            //DRUGBANKRequest(this.url, Bio2RdfFirst.class);
+        }
+        else{
+            String queryString = "PREFIX drugbank_vocab: <http://bio2rdf.org/drugbank_vocabulary:>\n" +
+                    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+                    "ASK WHERE {\n" +
+                    "   ?ddi rdf:type drugbank_vocab:Drug-Drug-Interaction .\n" +
+                    "   <http://bio2rdf.org/drugbank:" + this.drugbankui + "> drugbank_vocab:ddi-interactor-in ?ddi .\n" +
+                    "   <http://bio2rdf.org/drugbank:" + this.examples[count] + "> drugbank_vocab:ddi-interactor-in ?ddi .\n" +
+                    "}";
+            Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+            QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
+            this.url = qe.toString().substring(4) + sparqlEndpointAnswerFormat2;
+            interactionChecker(this.url, CustomSearch.class);
+        }
     }
 
     public void resourceRequest(String url, Class<?> cl){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -88,11 +114,17 @@ public class Bio2RdfThread extends Thread implements Runnable{
                         List<Bio2RdfPrevThird> bio2RdfPrevThirdList = bio2RdfPrevSecond.getBindings();
                         Bio2RdfResource bio2RdfResource = bio2RdfPrevThirdList.get(0).getResource();
                         String a = "";
-                        String queryString = "DESCRIBE <" + bio2RdfResource.getValue() + ">";
-                        Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-                        QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
-                        String url2 = qe.toString().substring(4) + sparqlEndpointAnswerFormat;
-                        DRUGBANKRequest(url2, Bio2RdfFirst.class);
+                        if(threadType == 0) {
+                            String queryString = "DESCRIBE <" + bio2RdfResource.getValue() + ">";
+                            Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+                            QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
+                            String url2 = qe.toString().substring(4) + sparqlEndpointAnswerFormat;
+                            DRUGBANKRequest(url2, Bio2RdfFirst.class);
+                        }
+                        else{
+                            title = names[count];
+                            interactionRequest(bio2RdfResource.getValue(), 0, 1);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -186,6 +218,42 @@ public class Bio2RdfThread extends Thread implements Runnable{
         String a = ";";
     }
 
+    private void interactionChecker(String url, Class<?> cl){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        Object gsonResp = gson.fromJson(response, CustomSearch.class);
+                        CustomSearch customSearch = (CustomSearch) gsonResp;
+                        customRes = customSearch.isBool();
+                        if(!customRes)
+                            UIThread.start();
+                        else{
+                            String queryString = "PREFIX drugbank_vocab: <http://bio2rdf.org/drugbank_vocabulary:>\n" +
+                                    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+                                    "SELECT *\n" +
+                                    "WHERE {\n" +
+                                    "   ?resource rdf:type drugbank_vocab:Drug-Drug-Interaction .\n" +
+                                    "   <http://bio2rdf.org/drugbank:" + drugbankui + "> drugbank_vocab:ddi-interactor-in ?resource .\n" +
+                                    "   <http://bio2rdf.org/drugbank:" + examples[count] + "> drugbank_vocab:ddi-interactor-in ?resource .\n" +
+                                    "}";
+                            Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+                            QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
+                            String dir = qe.toString().substring(4) + sparqlEndpointAnswerFormat2;
+                            resourceRequest(dir, Bio2RdfPrevFirst.class);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
     public void setDRUGBANKui(String drugbankui){
         this.drugbankui = drugbankui;
     }
@@ -208,5 +276,13 @@ public class Bio2RdfThread extends Thread implements Runnable{
 
     public String getDescription() {
         return this.description;
+    }
+
+    public boolean isCustomRes(){
+        return this.customRes;
+    }
+
+    public void addCount(int count){
+        this.count = count;
     }
 }

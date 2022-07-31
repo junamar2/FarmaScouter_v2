@@ -17,21 +17,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/cbAutomatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="8dp"
+        android:checked="true"
+        android:minHeight="48dp"
+        android:text="Automatic Search"
+        app:layout_constraintStart_toStartOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <CheckBox
+        android:id="@+id/cbCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:minHeight="48dp"
+        android:text="Custom Search"
+        app:layout_constraintStart_toEndOf="@+id/cbAutomatic"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
     <TextView
         android:id="@+id/tvDescTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/cbAutomatic" />
 
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="200dp"
+        android:maxHeight="100dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +111,7 @@
         android:id="@+id/tvPBInteractions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/searchingInteractions"
+        android:text="Searching for interactions. This may take a wile"
         android:textAlignment="center"
         android:textColor="@color/secondary_color"
         android:textStyle="bold"
@@ -103,7 +126,7 @@
         android:id="@+id/tvNoInteractions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/NoInteractions"
+        android:text="No interactions found, try again or try another drug"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
